@@ -10,6 +10,6 @@ server.starttls()
 server.login(sender_email, password)
 print("Login success")
 
-message = input("Enter your message to the reciever")
+message = input("Enter your message to the reciever: ")
 server.sendmail(sender_email, rec_email, message)
 print("Email has been sent to ", rec_email)
