@@ -1,9 +1,9 @@
 import smtplib
+from email_credentials import password, sender_email, rec_email
 
-sender_email = input("Please enter your email: ")
-password = input("Please enter your password : ")
-rec_email = input("Please enter reciever email: ")
-
+# sender_email = input("Please enter your email: ")
+# password = input("Please enter your password : ")
+# rec_email = input("Please enter reciever email: ")
 
 server = smtplib.SMTP('smtp.gmail.com', 587)
 server.starttls()
