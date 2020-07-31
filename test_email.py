@@ -20,7 +20,7 @@ def connect_email(sender_email, password):
     return server
 
 
-def send_email(server, receiver_email, message):
+def send_email(server, rec_email, message):
     """ Sends email
 
     """
@@ -29,7 +29,7 @@ def send_email(server, receiver_email, message):
 
 
 if __name__ == "__main__":
-    connect_email(sender_email, password)
+    server = connect_email(sender_email, password)
     receiver_email = 'b.tengelsen@gmail.com'
     message = 'hello world'
-    
+    send_email(server, rec_email, message)
