@@ -1,1 +1,1 @@
-ECHO is on.
+This is not a finished project
