@@ -4,7 +4,6 @@ from email_credentials import password, sender_email
 
 def connect_email(sender_email, password):
     """ sets up a smtp server
-
     Args:
         sender_email (str): senders email address
         password (str): password for sender's email 
