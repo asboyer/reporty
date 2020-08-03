@@ -6,7 +6,7 @@ def connect_email(sender_email, password):
     """ sets up a smtp server
     Args:
         sender_email (str): senders email address
-        password (str): password for sender's email 
+        password (str): password for sender's email
 
     Returns:
         smtplib.SMTP object
@@ -29,6 +29,10 @@ def send_email(server, rec_email, message):
 
 if __name__ == "__main__":
     server = connect_email(sender_email, password)
+<<<<<<< HEAD
     rec_email = 'asboyer@gmail.com'
+=======
+    rec_email = 'b.tengelsen@gmail.com'
+>>>>>>> 1eb6b7bfe60226b65488b80a43f7c7878bfdcf64
     message = 'hello world'
     send_email(server, rec_email, message)
