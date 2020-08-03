@@ -29,6 +29,6 @@ def send_email(server, rec_email, message):
 
 if __name__ == "__main__":
     server = connect_email(sender_email, password)
-    receiver_email = 'b.tengelsen@gmail.com'
+    rec_email = 'asboyer@gmail.com'
     message = 'hello world'
     send_email(server, rec_email, message)
