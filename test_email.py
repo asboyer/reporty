@@ -24,7 +24,7 @@ def send_email(server, rec_email, message):
 
     """
     server.sendmail(sender_email, rec_email, message)
-    print("Email has been sent to ", rec_email)
+    print("Email has been sent to " + rec_email)
 
 
 if __name__ == "__main__":
