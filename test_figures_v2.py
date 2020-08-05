@@ -11,6 +11,9 @@ def make_dataframe():
     
     #df = DataFrame(Data,columns=['Unemployment_Rate','Stock_Index_Price'])
     #return df
+    # goal is to create a function that makes the data frame 
+    # and then have seperate functions depending on what the kind of plot the user inputs
+    # just an idea 
     pass
 
     
