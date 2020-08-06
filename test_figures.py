@@ -9,7 +9,6 @@ def make_random_figure():
 
     Returns a matplotlib figure
     """
-    pass
 
     # make some fake data or use numpy to get random data
     Data = {'Unemployment_Rate' : [6.1,5.8,5.7,5.7,5.8,5.6,5.5,5.3,5.2,5.2],
@@ -20,14 +19,14 @@ def make_random_figure():
     # pull data into a dataframe
     df = DataFrame(Data,columns=['Unemployment_Rate','Stock_Index_Price'])
     # fig = df.plot()
-    fig = df.plot(x ='Unemployment_Rate', y='Stock_Index_Price', kind = 'scatter')
+    # fig = df.plot(x ='Unemployment_Rate', y='Stock_Index_Price', kind = 'scatter')
     # return fig
-    return fig 
+    return df 
 
     
 
 
 if __name__ == "__main__":
 
-    fig = make_random_figure()
-    plt.show()
+    df = make_random_figure()
+    df.to_html('test_this.html')
