@@ -28,11 +28,11 @@ def make_random_figure():
     # return fig 
     return df
     
-html = 
+
     
 
 
 if __name__ == "__main__":
 
     fig = make_random_figure()
-    plt.show()
+    df.to_html('test_this.html')
