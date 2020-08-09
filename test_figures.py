@@ -23,10 +23,12 @@ def make_random_figure():
     # pull data into a dataframe
     df = DataFrame(Data,columns=['Death','Cases'])
     # fig = df.plot()
-    fig = df.plot(x ='Death', y='Cases', kind = 'scatter')
+    # fig = df.plot(x ='Death', y='Cases', kind = 'scatter')
     # return fig
-    return fig 
-
+    # return fig 
+    return df
+    
+html = 
     
 
 
