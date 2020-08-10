@@ -9,7 +9,7 @@ import pandas as pd
 from pandas import DataFrame 
 import numpy
 import matplotlib.pyplot as plt
-from data import stockData
+from data import stockData as Data
 
 def connect_email(sender_email, password):
     """ sets up a smtp server
@@ -22,7 +22,7 @@ def connect_email(sender_email, password):
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.starttls()
     server.login(sender_email, password)
-    print("Login success")
+    print("Login success!")
 
     return server
 
@@ -36,7 +36,7 @@ def send_email(server, rec_email, message):
 
 # for data
 def make_random_figure():
-    df = DataFrame(stockData,columns=['Unemployment_Rate','Stock_Index_Price'])
+    df = DataFrame(Data, columns=['Unemployment_Rate','Stock_Index_Price'])
     return df
 
 # email stuff
