@@ -2,10 +2,7 @@
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from email.mime.base import MIMEBase 
-from email import encoders
 from email_credentials import password, sender_email
-from pathlib import Path
 
 # data 
 import pandas as pd
@@ -17,9 +14,6 @@ from data import stockData as Data
 # extra
 import random
 number = random.randint(1, 1000000)
-
-# deleting files
-import os
 
 def connect_email(sender_email, password):
     """ sets up a smtp server
@@ -58,42 +52,21 @@ message["To"] = rec_email
 
 if __name__ == "__main__":
     
-    # the text portion of the message
-    text = "Some text"
-    message.attach(MIMEText(text, 'plain'))
-    
     # creates the html file, converts into into text
     fig = make_random_figure()
     fig.to_html('test_this.html')
-    fileName = "test_this.html"
-    f = open(fileName,"r")
+    f = open("test_this.html","r")
     html = f.read()
-    f.close()
+    text = "Check out this data!"
     
     # converts html text into an embed in the email
+    textTo = MIMEText(text, 'plain')
     attatchment = MIMEText(html, "html")
-    message.attach(attatchment) 
-    
-    # html as attatchment
-    attach_file_name = fileName
-    attach_file = open(attach_file_name, 'rb')
-    payload = MIMEBase('application', 'octate-stream')
-    payload.set_payload((attach_file).read())
-    encoders.encode_base64(payload) #encode the attachment
-    #add payload header with filename
-    payload.add_header('Content-Decomposition', 'attachment', filename= 'attatchment.html')
-    payload.add_header('Content-Disposition',
-                        'attachment; filename="{}"'.format(Path(attach_file_name).name))
-    message.attach(payload)
-    attach_file.close()
+    message.attach(textTo)
+    message.attach(attatchment)
     
     # sends the email
     server = connect_email(sender_email, password)
     rec_email = 'deepkernel1@gmail.com'
     send_email(server, rec_email, message.as_string())
-    
-    # delete file
-    if os.path.exists(fileName):
-        os.remove(fileName)
-    else:
-        pass
+
