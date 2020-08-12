@@ -46,16 +46,10 @@ def send_email(server, rec_email, message):
 
 # for data
 def make_random_figure():
+    for i in range 
     df = DataFrame(Data, columns=['Unemployment_Rate','Stock_Index_Price'])
     return df
 
-def prepend(html_data, header): 
-      
-    # Using format() 
-    header += '{0}'
-    html_data = [header.format(i) for i in html_data] 
-    return(html_data) 
-    
 # email stuff
 rec_email = "deepkernel1@gmail.com"
 message = MIMEMultipart()
@@ -84,6 +78,9 @@ html_template = """
 </style>
 </head>
 <body>
+
+<h1>Your Figures:</h1>
+<p>Here are the figures upon request.</p>
 {0}
 </body>
 </html>
@@ -92,34 +89,23 @@ html_template = """
 if __name__ == "__main__":
     
     # the text portion of the message
-    text = "Here are some attatchments sent using Python!"
+    text = "Some text"
     message.attach(MIMEText(text, 'plain'))
-    attatchment_amount = 4
+    fileName1 = "figure.html"
     
-    data_html = []
-    figures_html = "figures.html"
+    
+    
+    
     # creates the html file, converts into into text
-    
-    for i in range(attatchment_amount):
-        fig = make_random_figure()
-        fig.to_html(figures_html)
-        f = open(figures_html,"r")
-        html_fig = f.read()
-        data_html.append(html_fig)
-        f.close()
-
-    header = """
-    <h1>Your Figures:</h1>
-    <p>Here are the figures upon request.</p>
-        
-    """
-    newData = prepend(data_html, header)
-        
-    here_html = '\n'.join(newData)
+    fig = make_random_figure()
+    fig.to_html(fileName1)
+    f = open(fileName1,"r")
+    html_fig = f.read()
+    f.close()
     
     fileName = 'Final.html'
     file = open(fileName,"w+")
-    file.write(html_template.format(here_html, css))
+    file.write(html_template.format(html_fig, css))
     file.close()  
     
     file2 = open(fileName, "r")
@@ -153,7 +139,7 @@ if __name__ == "__main__":
         pass
 
     # delete file
-    if os.path.exists(figures_html):
-        os.remove(figures_html)
+    if os.path.exists(fileName1):
+        os.remove(fileName1)
     else:
         pass
