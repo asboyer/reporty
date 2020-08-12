@@ -94,7 +94,7 @@ if __name__ == "__main__":
     # the text portion of the message
     text = "Here are some attatchments sent using Python!"
     message.attach(MIMEText(text, 'plain'))
-    attatchment_amount = 4
+    attatchment_amount = 8
     
     data_html = []
     figures_html = "figures.html"
