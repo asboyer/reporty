@@ -10,7 +10,7 @@ from email_credentials import password, sender_email
 # data 
 import pandas as pd
 from pandas import DataFrame 
-import numpy
+import numpy as np
 import matplotlib.pyplot as plt
 from data import stockData as Data
 
@@ -46,7 +46,9 @@ def send_email(server, rec_email, message):
 
 # for data
 def make_random_figure():
-    df = DataFrame(Data, columns=['Unemployment_Rate','Stock_Index_Price'])
+    data =  np.random.normal(size=(20, 2))
+    df = DataFrame(data, columns=['Goldfish Sales','Stock_Index_Price'])
+    df['Stock_Index_Price'] += 10
     return df
 
 def prepend(html_data, header): 
@@ -91,6 +93,8 @@ html_template = """
 
 if __name__ == "__main__":
     
+    fig = make_random_figure()
+    plt.show()
     # the text portion of the message
     text = "Check this out"
     message.attach(MIMEText(text, 'plain'))
@@ -143,7 +147,7 @@ if __name__ == "__main__":
     
     # sends the email
     server = connect_email(sender_email, password)
-    rec_email = 'deepkernel1@gmail.com'
+    rec_email = 'b.tengelsen@gmail.com'
     send_email(server, rec_email, message.as_string())
     
     # delete file
