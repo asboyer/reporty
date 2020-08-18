@@ -14,12 +14,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 from data import stockData as Data
 
-# extra
+# misc
 import random
 number = random.randint(1, 1000000)
 
 # deleting files
 import os
+
+# scheduling
+import datetime as dt 
 
 def connect_email(sender_email, password):
     """ sets up a smtp server
@@ -43,7 +46,6 @@ def send_email(server, rec_email, message):
     print("Email has been sent to " + rec_email)
     server.quit()
 
-
 # for data
 def make_random_figure():
     data =  np.random.normal(size=(20, 2))
@@ -65,18 +67,6 @@ message["Subject"] = str(number)
 message["From"] = sender_email
 message["To"] = rec_email
 
-
-css = """
-    body {
-      background-color: linen;
-    }
-    
-    h1 {
-      color: maroon;
-      margin-left: 0px;
-    }
-    """
-
 html_template = """ 
 <!DOCTYPE html>
 <html>
@@ -90,6 +80,23 @@ html_template = """
 </body>
 </html>
     """
+    
+css = """
+    body {
+      background-color: linen;
+    }
+    
+    h1 {
+      color: maroon;
+      margin-left: 0px;
+    }
+    """
+    
+header = """
+<h1>Your Figures:</h1>
+<p>Here are the figures upon request.</p>
+    
+"""
 
 if __name__ == "__main__":
     
@@ -98,7 +105,7 @@ if __name__ == "__main__":
     # the text portion of the message
     text = "Check this out"
     message.attach(MIMEText(text, 'plain'))
-    attatchment_amount = 1
+    attatchment_amount = 3
     
     data_html = []
     figures_html = "figures.html"
@@ -112,11 +119,7 @@ if __name__ == "__main__":
         data_html.append(html_fig)
         f.close()
 
-    header = """
-    <h1>Your Figures:</h1>
-    <p>Here are the figures upon request.</p>
-        
-    """
+    
     newData = prepend(data_html, header)
         
     here_html = '\n'.join(newData)
@@ -147,7 +150,6 @@ if __name__ == "__main__":
     
     # sends the email
     server = connect_email(sender_email, password)
-    rec_email = 'b.tengelsen@gmail.com'
     send_email(server, rec_email, message.as_string())
     
     # delete file
