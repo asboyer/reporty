@@ -5,7 +5,8 @@ from email.mime.text import MIMEText
 from email.mime.base import MIMEBase 
 from email import encoders
 from email_credentials import password, sender_email
-
+import templates as html_templates
+import yaml
 
 # data 
 import pandas as pd
@@ -44,6 +45,7 @@ def send_email(server, rec_email, message):
     server.sendmail(sender_email, rec_email, message)
     #print("Email has been sent to " + rec_email)
     server.quit()
+
     
 def send_email_at(send_time, rec_email, server, message):
     time.sleep(send_time.timestamp() - time.time())
@@ -67,61 +69,32 @@ def prepend(html_data, header):
     header += '{0}'
     html_data = [header.format(i) for i in html_data] 
     return(html_data) 
-    
-# email stuff
-rec_email = "deepkernel1@gmail.com"
-message = MIMEMultipart()
-message["Subject"] = str(number)
-message["From"] = sender_email
-message["To"] = rec_email
 
-html_template = """ 
-<!DOCTYPE html>
-<html>
-<head>
-<style>
-{1}
-</style>
-</head>
-<body>
-{0}
-</body>
-</html>
-    """
-    
-css = """
-    body {
-      background-color: linen;
-    }
-    
-    h1 {
-      color: maroon;
-      margin-left: 0px;
-    }
-    """
-    
-header = """
-<h1>Your Figures:</h1>
-<p>Here are the figures upon request.</p>
-    
-"""
 
-# if __name__ == "__main__":
-while True:
-    number = random.randint(1, 1000000)
-    fig = make_random_figure()
-    plt.show()
-    # the text portion of the message
-    text = "Check this out"
-    message.attach(MIMEText(text, 'plain'))
-    attatchment_amount = 3
+def generate_report(figure_list, title_list, caption_list, filename='Final.html', template=None):
+    """ Takes list of figures, titles, and captions to make an html report
+
+    Args:
+        figure_list (list):
+        title_list (list):
+        caption_list(list):
+        filename (str): name of html file - default is 'Final.html'
+
+    Returns:
+        writes an html file
+    """
+    with open('templates/basic_theme.yaml') as file:
+        template_dict = yaml.load(file)
+
+    html_template = template_dict['html_template']
+    header = template_dict['header']
+    css = template_dict['css']
     
     data_html = []
     figures_html = "figures.html"
     # creates the html file, converts into into text
     
-    for i in range(attatchment_amount):
-        fig = make_random_figure()
+    for fig, title, caption in zip(figure_list, title_list, caption_list):
         fig.to_html(figures_html)
         f = open(figures_html,"r")
         html_fig = f.read()
@@ -137,40 +110,70 @@ while True:
     file = open(fileName,"w+")
     file.write(html_template.format(here_html, css))
     file.close()  
-    
-    file2 = open(fileName, "r")
-    html2 = file2.read()
-    file2.close()    
 
     
-    # converts html text into an embed in the email
-    attatchment = MIMEText(html2, "html")
-    message.attach(attatchment) 
-    
-    # html as attatchment
-    attach_file = open(fileName, 'rb')
-    payload = MIMEBase('application', 'octate-stream')
-    payload.set_payload(attach_file.read())
-    encoders.encode_base64(payload) #encode the attachment
-    #add payload header with filename
-    payload.add_header('Content-Disposition', 'attachment', filename=fileName)
-    message.attach(payload)
-    attach_file.close()
-    
-    # sends the email
-    server = connect_email(sender_email, password)
-    send_email_at(send_time, rec_email, server, message)
-    send_time = send_time + interval
-    # send_email(server, rec_email, message.as_string())
-    
-    # delete file
-    if os.path.exists(fileName):
-        os.remove(fileName)
-    else:
-        pass
+# email stuff
+rec_email = "deepkernel1@gmail.com"
+message = MIMEMultipart()
+message["Subject"] = 'hi'
+message["From"] = sender_email
+message["To"] = rec_email
 
-    # delete file
-    if os.path.exists(figures_html):
-        os.remove(figures_html)
-    else:
-        pass
+
+if __name__ == "__main__":
+    # while True:
+    number = random.randint(1, 1000000)
+    fig = make_random_figure()
+    plt.show()
+    # the text portion of the message
+    text = "Check this out"
+    message.attach(MIMEText(text, 'plain'))
+    
+    attatchment_amount = 3
+    fig_list = []
+    title_list = []
+    caption_list = []
+    for i in range(attatchment_amount):
+        fig_list.append(make_random_figure())
+        title_list.append('title {}'.format(i))
+        caption_list.append('caption {}'.format(i))
+    
+    
+    generate_report(fig_list, title_list, caption_list)
+
+    # file2 = open(fileName, "r")
+    # html2 = file2.read()
+    # file2.close()    
+
+    
+    # # converts html text into an embed in the email
+    # attatchment = MIMEText(html2, "html")
+    # message.attach(attatchment) 
+    
+    # # html as attatchment
+    # attach_file = open(fileName, 'rb')
+    # payload = MIMEBase('application', 'octate-stream')
+    # payload.set_payload(attach_file.read())
+    # encoders.encode_base64(payload) #encode the attachment
+    # #add payload header with filename
+    # payload.add_header('Content-Disposition', 'attachment', filename=fileName)
+    # message.attach(payload)
+    # attach_file.close()
+    
+    # # sends the email
+    # server = connect_email(sender_email, password)
+    # send_email_at(send_time, rec_email, server, message)
+    # send_time = send_time + interval
+    # # send_email(server, rec_email, message.as_string())
+    
+    # # delete file
+    # if os.path.exists(fileName):
+        # os.remove(fileName)
+    # else:
+        # pass
+
+    # # delete file
+    # if os.path.exists(figures_html):
+        # os.remove(figures_html)
+    # else:
+        # pass
