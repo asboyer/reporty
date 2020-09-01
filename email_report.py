@@ -7,16 +7,6 @@ from email import encoders
 from email_credentials import password, sender_email
 import templates as html_templates
 import yaml
-
-# data 
-import pandas as pd
-from pandas import DataFrame 
-import numpy as np
-import matplotlib.pyplot as plt
-
-# misc
-import random
-
 # deleting files
 import os
 
@@ -42,19 +32,6 @@ def send_email(server, rec_email, message):
     print("Email has been sent to " + rec_email)
     server.quit()
 
-    
-def send_email_at(send_time, rec_email, server, message):
-    time.sleep(send_time.timestamp() - time.time())
-    send_email(server, rec_email, message.as_string())
-    print("Email has been sent to " + rec_email)
-
-# for data
-def make_random_figure():
-    data =  np.random.normal(size=(20, 2))
-    df = DataFrame(data, columns=['Goldfish Sales','Stock_Index_Price'])
-    df['Stock_Index_Price'] += 10
-    return df
-
 def prepend(html_data, header): 
       
     # Using format() 
@@ -63,7 +40,7 @@ def prepend(html_data, header):
     return(html_data) 
 
 
-def generate_report(figure_list, title_list, caption_list, filename='Final.html', template=None):
+def generate_report(figure_list, title_list, caption_list, fileName='Final.html', template='basic_theme.yaml'):
     """ Takes list of figures, titles, and captions to make an html report
 
     Args:
@@ -75,8 +52,8 @@ def generate_report(figure_list, title_list, caption_list, filename='Final.html'
     Returns:
         writes an html file
     """
-    with open('templates/basic_theme.yaml') as file:
-        template_dict = yaml.load(file)
+    with open('templates/'+template) as file:
+        template_dict = yaml.safe_load(file)
 
     html_template = template_dict['html_template']
     header = template_dict['header']
@@ -97,48 +74,26 @@ def generate_report(figure_list, title_list, caption_list, filename='Final.html'
     newData = prepend(data_html, header)
         
     here_html = '\n'.join(newData)
-    
-    fileName = 'Final.html'
+
     file = open(fileName,"w+")
     file.write(html_template.format(here_html, css))
     file.close()  
-
     
-# email stuff
-rec_email = "deepkernel1@gmail.com"
-message = MIMEMultipart()
-message["Subject"] = 'hi'
-message["From"] = sender_email
-message["To"] = rec_email
+    file2 = open(fileName, "r")
+    html2 = file2.read()
+    file2.close()   
+        
+    return html2
 
-
-if __name__ == "__main__":
-    # while True:
-    number = random.randint(1, 1000000)
-    fig = make_random_figure()
-    plt.show()
-    # the text portion of the message
-    text = "Check this out"
+def embed_email(rec_email, report, text, message = MIMEMultipart(), fileName = 'Final.html', del_files="no"):
+    message["From"] = sender_email
+    message["To"] = rec_email
+    message["Subject"] = "Email Report"
     message.attach(MIMEText(text, 'plain'))
     
-    attatchment_amount = 3
-    fig_list = []
-    title_list = []
-    caption_list = []
-    for i in range(attatchment_amount):
-        fig_list.append(make_random_figure())
-        title_list.append('title {}'.format(i))
-        caption_list.append('caption {}'.format(i))
-    
-    
-    generate_report(fig_list, title_list, caption_list)
-
-
- # converts html text into an embed in the email
-    attatchment = MIMEText(html2, "html")
+    attatchment = MIMEText(report, "html")
     message.attach(attatchment) 
     
-    # html as attatchment
     attach_file = open(fileName, 'rb')
     payload = MIMEBase('application', 'octate-stream')
     payload.set_payload(attach_file.read())
@@ -148,18 +103,25 @@ if __name__ == "__main__":
     message.attach(payload)
     attach_file.close()
     
-    # sends the email
-    server = connect_email(sender_email, password)
-    send_email(server, rec_email, message.as_string())
-    
-    # delete file
-    if os.path.exists(fileName):
-        os.remove(fileName)
-    else:
-        pass
+    final_message = message.as_string()
+    if del_files == 'yes':
+        if os.path.exists("Final.html"):
+            os.remove("Final.html")
+        else:
+            pass
 
-    # delete file
-    if os.path.exists(figures_html):
-        os.remove(figures_html)
+        if os.path.exists("figures.html"):
+            os.remove("figures.html")
+        else:
+            pass
+            
+        if os.path.exists(fileName):
+            os.remove(fileName)
+        else:
+            pass
+        
     else:
         pass
+    return final_message
+
+
