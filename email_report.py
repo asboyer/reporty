@@ -85,10 +85,10 @@ def generate_report(figure_list, title_list, caption_list, fileName='Final.html'
         
     return html2
 
-def embed_email(rec_email, report, text, message = MIMEMultipart(), fileName = 'Final.html', del_files="no"):
+def embed_email(rec_email, report, text=" ", message = MIMEMultipart(), fileName = 'Final.html', del_files="no", subject="Email Report"):
     message["From"] = sender_email
     message["To"] = rec_email
-    message["Subject"] = "Email Report"
+    message["Subject"] = subject
     message.attach(MIMEText(text, 'plain'))
     
     attatchment = MIMEText(report, "html")

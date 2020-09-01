@@ -13,7 +13,6 @@ def make_random_figure():
     return df
 
 rec_email = "deepkernel1@gmail.com"
-text = "check out that Tow Truck"
 
 if __name__ == "__main__":
 
@@ -22,7 +21,7 @@ if __name__ == "__main__":
     caption_list = ['aa', 'bb', 'cc', 'dd']
     
     report = generate_report(figure_list, title_list, caption_list, template='green_theme.yaml')
-    embed = embed_email(rec_email, report, text, del_files='yes')
+    embed = embed_email(rec_email, report, subject='9000',  del_files='yes')
     server = connect_email(sender_email, password)
     send_email(server, rec_email, embed)
     
