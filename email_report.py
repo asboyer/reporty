@@ -7,22 +7,8 @@ from email import encoders
 from email_credentials import password, sender_email
 import templates as html_templates
 import yaml
-
-# data 
-import pandas as pd
-from pandas import DataFrame 
-import numpy as np
-import matplotlib.pyplot as plt
-
-# misc
-import random
-
 # deleting files
 import os
-
-# scheduling
-import datetime as dt 
-import time
 
 def connect_email(sender_email, password):
     """ sets up a smtp server
@@ -43,35 +29,23 @@ def connect_email(sender_email, password):
 def send_email(server, rec_email, message):
     # sends email
     server.sendmail(sender_email, rec_email, message)
-    #print("Email has been sent to " + rec_email)
+    print("Email has been sent to " + rec_email)
     server.quit()
 
-    
-def send_email_at(send_time, rec_email, server, message):
-    time.sleep(send_time.timestamp() - time.time())
-    send_email(server, rec_email, message.as_string())
-    print("Email has been sent to " + rec_email)
-
-first_email_time = dt.datetime(2020,8,18,14,23,45) # set this using millitary time
-interval = dt.timedelta(minutes=1)
-send_time = first_email_time
-
-# for data
-def make_random_figure():
-    data =  np.random.normal(size=(20, 2))
-    df = DataFrame(data, columns=['Goldfish Sales','Stock_Index_Price'])
-    df['Stock_Index_Price'] += 10
-    return df
-
-def prepend(html_data, header): 
+def prepend(html_data, header_list): 
       
     # Using format() 
-    header += '{0}'
-    html_data = [header.format(i) for i in html_data] 
-    return(html_data) 
+    full_html = []
+    for data, header in zip(html_data, header_list):
+        # header += '{data}{caption}'
+        header += '{data}'
+        single_figure_html = header.format(data=data)
+        full_html.append(single_figure_html)
+ 
+    return(full_html) 
 
 
-def generate_report(figure_list, title_list, caption_list, filename='Final.html', template=None):
+def generate_report(figure_list, title_list, caption_list, fileName='Final.html', template='basic_theme.yaml'):
     """ Takes list of figures, titles, and captions to make an html report
 
     Args:
@@ -83,97 +57,84 @@ def generate_report(figure_list, title_list, caption_list, filename='Final.html'
     Returns:
         writes an html file
     """
-    with open('templates/basic_theme.yaml') as file:
-        template_dict = yaml.load(file)
+    with open('templates/'+template) as file:
+        template_dict = yaml.safe_load(file)
 
     html_template = template_dict['html_template']
-    header = template_dict['header']
+    header_template = template_dict['header']
     css = template_dict['css']
     
     data_html = []
+    header_html = []
+    caption_html = []
     figures_html = "figures.html"
     # creates the html file, converts into into text
     
     for fig, title, caption in zip(figure_list, title_list, caption_list):
+        # get list of figure html
         fig.to_html(figures_html)
         f = open(figures_html,"r")
         html_fig = f.read()
         data_html.append(html_fig)
         f.close()
 
+        # get list of header html
+        header_html.append(header_template.format(title=title))
+
+        # get list of caption html
+        # todo
     
-    newData = prepend(data_html, header)
+    newData = prepend(data_html, header_html)
         
     here_html = '\n'.join(newData)
-    
-    fileName = 'Final.html'
+
     file = open(fileName,"w+")
     file.write(html_template.format(here_html, css))
     file.close()  
-
     
-# email stuff
-rec_email = "deepkernel1@gmail.com"
-message = MIMEMultipart()
-message["Subject"] = 'hi'
-message["From"] = sender_email
-message["To"] = rec_email
+    file2 = open(fileName, "r")
+    html2 = file2.read()
+    file2.close()   
+        
+    return html2
 
-
-if __name__ == "__main__":
-    # while True:
-    number = random.randint(1, 1000000)
-    fig = make_random_figure()
-    plt.show()
-    # the text portion of the message
-    text = "Check this out"
+def embed_email(rec_email, report, text=" ", message = MIMEMultipart(), fileName = 'Final.html', del_files="no", subject="Email Report"):
+    message["From"] = sender_email
+    message["To"] = rec_email
+    message["Subject"] = subject
     message.attach(MIMEText(text, 'plain'))
     
-    attatchment_amount = 3
-    fig_list = []
-    title_list = []
-    caption_list = []
-    for i in range(attatchment_amount):
-        fig_list.append(make_random_figure())
-        title_list.append('title {}'.format(i))
-        caption_list.append('caption {}'.format(i))
+    attatchment = MIMEText(report, "html")
+    message.attach(attatchment) 
     
+    attach_file = open(fileName, 'rb')
+    payload = MIMEBase('application', 'octate-stream')
+    payload.set_payload(attach_file.read())
+    encoders.encode_base64(payload) #encode the attachment
+    #add payload header with filename
+    payload.add_header('Content-Disposition', 'attachment', filename=fileName)
+    message.attach(payload)
+    attach_file.close()
     
-    generate_report(fig_list, title_list, caption_list)
+    final_message = message.as_string()
+    if del_files == 'yes':
+        if os.path.exists("Final.html"):
+            os.remove("Final.html")
+        else:
+            pass
 
-    # file2 = open(fileName, "r")
-    # html2 = file2.read()
-    # file2.close()    
+        if os.path.exists("figures.html"):
+            os.remove("figures.html")
+        else:
+            pass
+            
+        if os.path.exists(fileName):
+            os.remove(fileName)
+        else:
+            pass
+        
+    else:
+        pass
+    return final_message
 
-    
-    # # converts html text into an embed in the email
-    # attatchment = MIMEText(html2, "html")
-    # message.attach(attatchment) 
-    
-    # # html as attatchment
-    # attach_file = open(fileName, 'rb')
-    # payload = MIMEBase('application', 'octate-stream')
-    # payload.set_payload(attach_file.read())
-    # encoders.encode_base64(payload) #encode the attachment
-    # #add payload header with filename
-    # payload.add_header('Content-Disposition', 'attachment', filename=fileName)
-    # message.attach(payload)
-    # attach_file.close()
-    
-    # # sends the email
-    # server = connect_email(sender_email, password)
-    # send_email_at(send_time, rec_email, server, message)
-    # send_time = send_time + interval
-    # # send_email(server, rec_email, message.as_string())
-    
-    # # delete file
-    # if os.path.exists(fileName):
-        # os.remove(fileName)
-    # else:
-        # pass
 
-    # # delete file
-    # if os.path.exists(figures_html):
-        # os.remove(figures_html)
-    # else:
-        # pass
