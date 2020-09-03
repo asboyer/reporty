@@ -32,12 +32,17 @@ def send_email(server, rec_email, message):
     print("Email has been sent to " + rec_email)
     server.quit()
 
-def prepend(html_data, header): 
+def prepend(html_data, header_list): 
       
     # Using format() 
-    header += '{0}'
-    html_data = [header.format(i) for i in html_data] 
-    return(html_data) 
+    full_html = []
+    for data, header in zip(html_data, header_list):
+        # header += '{data}{caption}'
+        header += '{data}'
+        single_figure_html = header.format(data=data)
+        full_html.append(single_figure_html)
+ 
+    return(full_html) 
 
 
 def generate_report(figure_list, title_list, caption_list, fileName='Final.html', template='basic_theme.yaml'):
@@ -56,22 +61,30 @@ def generate_report(figure_list, title_list, caption_list, fileName='Final.html'
         template_dict = yaml.safe_load(file)
 
     html_template = template_dict['html_template']
-    header = template_dict['header']
+    header_template = template_dict['header']
     css = template_dict['css']
     
     data_html = []
+    header_html = []
+    caption_html = []
     figures_html = "figures.html"
     # creates the html file, converts into into text
     
     for fig, title, caption in zip(figure_list, title_list, caption_list):
+        # get list of figure html
         fig.to_html(figures_html)
         f = open(figures_html,"r")
         html_fig = f.read()
         data_html.append(html_fig)
         f.close()
 
+        # get list of header html
+        header_html.append(header_template.format(title=title))
+
+        # get list of caption html
+        # todo
     
-    newData = prepend(data_html, header)
+    newData = prepend(data_html, header_html)
         
     here_html = '\n'.join(newData)
 

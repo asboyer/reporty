@@ -22,5 +22,5 @@ css: |
     }
 
 header: |
-    <h1>Your Figures:</h1>
+    <h1>{title}</h1>
     <p>Here are the figures upon request. This is the green theme, by the way!</p>
