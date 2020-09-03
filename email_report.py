@@ -77,12 +77,6 @@ def generate_report(figure_list, title_list=0, caption_list=0, fileName='Final.h
         
     while len(caption_list) < len(figure_list):
         caption_list.append("Default Caption")
-        
-    """while len(title_list) > len(figure_list):
-        title_list.pop()
-        
-    while len(caption_list) > len(figure_list):
-        caption_list.pop()"""
             
     with open('templates/'+template) as file:
         template_dict = yaml.safe_load(file)
