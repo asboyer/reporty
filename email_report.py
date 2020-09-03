@@ -32,11 +32,11 @@ def send_email(server, rec_email, message):
     print("Email has been sent to " + rec_email)
     server.quit()
 
-def prepend(html_data, header_list): 
+def prepend(data_html, header_html): 
       
     # Using format() 
     full_html = []
-    for data, header in zip(html_data, header_list):
+    for data, header in zip(data_html, header_html):
         # header += '{data}{caption}'
         header += '{data}'
         single_figure_html = header.format(data=data)
@@ -45,7 +45,7 @@ def prepend(html_data, header_list):
     return(full_html) 
 
 
-def generate_report(figure_list, title_list, caption_list, fileName='Final.html', template='basic_theme.yaml'):
+def generate_report(figure_list, title_list=0, caption_list=0, fileName='Final.html', template='basic_theme.yaml'):
     """ Takes list of figures, titles, and captions to make an html report
 
     Args:
@@ -57,6 +57,33 @@ def generate_report(figure_list, title_list, caption_list, fileName='Final.html'
     Returns:
         writes an html file
     """
+    
+    if title_list == 0:
+        title_list = []
+        for i in range (len(figure_list)):
+            title_list.append("Figure "+str(i+1))
+    else:
+        pass
+    
+    if caption_list == 0:
+        caption_list = []
+        for i in range (len(figure_list)):
+            caption_list.append("Caption "+str(i+1))
+    else:
+        pass
+
+    while len(title_list) < len(figure_list):
+        title_list.append("Default Title")
+        
+    while len(caption_list) < len(figure_list):
+        caption_list.append("Default Caption")
+        
+    """while len(title_list) > len(figure_list):
+        title_list.pop()
+        
+    while len(caption_list) > len(figure_list):
+        caption_list.pop()"""
+            
     with open('templates/'+template) as file:
         template_dict = yaml.safe_load(file)
 
@@ -79,9 +106,10 @@ def generate_report(figure_list, title_list, caption_list, fileName='Final.html'
         f.close()
 
         # get list of header html
-        header_html.append(header_template.format(title=title))
+        header_html.append(header_template.format(title=title, caption=caption))
 
         # get list of caption html
+        
         # todo
     
     newData = prepend(data_html, header_html)
@@ -98,7 +126,7 @@ def generate_report(figure_list, title_list, caption_list, fileName='Final.html'
         
     return html2
 
-def embed_email(rec_email, report, text=" ", message = MIMEMultipart(), fileName = 'Final.html', del_files="no", subject="Email Report"):
+def embed_email(rec_email, report, text="Default text", message = MIMEMultipart(), fileName = 'Final.html', del_files="no", subject="Email Report"):
     message["From"] = sender_email
     message["To"] = rec_email
     message["Subject"] = subject

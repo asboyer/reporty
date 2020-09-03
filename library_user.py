@@ -5,6 +5,8 @@ from email_credentials import password, sender_email
 from pandas import DataFrame
 import numpy as np
 
+import random 
+number = random.randint(1, 100000)
 
 def make_random_figure():
     data =  np.random.normal(size=(20, 2))
@@ -21,7 +23,7 @@ if __name__ == "__main__":
     caption_list = ['aa', 'bb', 'cc', 'dd']
     
     report = generate_report(figure_list, title_list, caption_list, template='green_theme.yaml')
-    embed = embed_email(rec_email, report, subject='9000',  del_files='yes')
+    embed = embed_email(rec_email, report, text="This message was sent with python", subject=str(number),  del_files='yes')
     server = connect_email(sender_email, password)
     send_email(server, rec_email, embed)
     

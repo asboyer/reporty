@@ -23,4 +23,4 @@ css: |
 
 header: |
     <h1>{title}</h1>
-    <p>Here are the figures upon request. This is the green theme, by the way!</p>
+    <p>{caption}</p>
