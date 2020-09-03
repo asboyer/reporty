@@ -18,7 +18,7 @@ rec_email = "deepkernel1@gmail.com"
 
 if __name__ == "__main__":
 
-    figure_list = [make_random_figure() for i in range(4)]
+    figure_list = [make_random_figure() for i in range(7)]
     title_list = ['a', 'b', 'c', 'd']
     caption_list = ['aa', 'bb', 'cc', 'dd']
     

@@ -22,5 +22,5 @@ css: |
     }
 
 header: |
-    <h1>Your Figures:</h1>
-    <p>Here are the figures upon request. This is the red theme, by the way!</p>
+    <h1>{title}</h1>
+    <p>{caption}</p>
