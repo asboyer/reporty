@@ -118,8 +118,8 @@ def generate_report(figure_list, title_list=0, caption_list=0, fileName='Final.h
     
     for fig, title, caption in zip(figure_list, title_list, caption_list):
         # get list of figure html
-        html_fig = fig.to_html()
-        data_html.append(html_fig)
+        #html_fig = fig.to_html()
+        data_html.append(make_html_from_figure_object(fig))
 
         # get list of header & captions html
         header_html.append(header_template.format(title=title, caption=caption))
