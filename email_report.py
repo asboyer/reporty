@@ -7,8 +7,10 @@ from email import encoders
 from email_credentials import password, sender_email
 import templates as html_templates
 import yaml
+import mpld3
 # deleting files
 import os
+
 
 def connect_email(sender_email, password):
     """ sets up a smtp server
@@ -43,6 +45,29 @@ def prepend(data_html, header_html):
         full_html.append(single_figure_html)
  
     return(full_html) 
+
+
+def make_html_from_figure_object(fig):
+    """Turns a 'figure' into html
+
+    Args: 
+        fig: either a pandas dataframe or a matplotlib figure object
+
+    Returns:
+        string of html
+
+    """
+    if str(fig.__class__) == "<class 'matplotlib.figure.Figure'>":
+        html_string = mpld3.fig_to_html(fig)
+    
+    elif str(type(fig)) == "<class 'pandas.core.frame.DataFrame'>":
+        html_string = fig.to_html()
+    
+    else:
+        raise Exception('Invalid figure object - must be a pandas dataframe or a matplotlib figure object')
+    
+    return html_string
+        
 
 
 def generate_report(figure_list, title_list=0, caption_list=0, fileName='Final.html', template='basic_theme.yaml'):
