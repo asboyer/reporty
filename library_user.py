@@ -18,12 +18,12 @@ rec_email = "deepkernel1@gmail.com"
 
 if __name__ == "__main__":
 
-    figure_list = [make_random_figure() for i in range(7)]
+    figure_list = [make_random_figure() for i in range(5)]
     title_list = ['a', 'b', 'c', 'd']
     caption_list = ['aa', 'bb', 'cc', 'dd']
     
-    report = generate_report(figure_list, title_list, caption_list, template='green_theme.yaml')
-    embed = embed_email(rec_email, report, text="This message was sent with python", subject=str(number),  del_files='yes')
+    report = generate_report(figure_list, title_list, caption_list, template='green_theme.yaml', fileName ='myfile.html')
+    embed = embed_email(rec_email, report, text="This message was sent with python", subject=str(number),  del_files='yes', fileName ='myfile.html')
     server = connect_email(sender_email, password)
     send_email(server, rec_email, embed)
     

@@ -93,19 +93,12 @@ def generate_report(figure_list, title_list=0, caption_list=0, fileName='Final.h
     
     for fig, title, caption in zip(figure_list, title_list, caption_list):
         # get list of figure html
-        fig.to_html(figures_html)
-        f = open(figures_html,"r")
-        html_fig = f.read()
+        html_fig = fig.to_html()
         data_html.append(html_fig)
-        f.close()
 
-        # get list of header html
+        # get list of header & captions html
         header_html.append(header_template.format(title=title, caption=caption))
 
-        # get list of caption html
-        
-        # todo
-    
     newData = prepend(data_html, header_html)
         
     here_html = '\n'.join(newData)
@@ -144,12 +137,6 @@ def embed_email(rec_email, report, text="Default text", message = MIMEMultipart(
             os.remove("Final.html")
         else:
             pass
-
-        if os.path.exists("figures.html"):
-            os.remove("figures.html")
-        else:
-            pass
-            
         if os.path.exists(fileName):
             os.remove(fileName)
         else:
