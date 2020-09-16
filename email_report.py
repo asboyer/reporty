@@ -15,6 +15,7 @@ import urllib
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from io import StringIO
 #test
+#new
 
 
 def connect_email(sender_email, password):
