@@ -17,7 +17,7 @@ import urllib
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from io import StringIO
 
-
+# 
 def connect_email(sender_email, password):
     """ sets up a smtp server
     Args:

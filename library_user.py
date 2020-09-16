@@ -5,7 +5,7 @@ from email_credentials import password, sender_email
 from pandas import DataFrame
 from matplotlib import pyplot as plt
 import numpy as np
-
+from matplotlib import pyplot as plt
 import random 
 number = random.randint(1, 100000)
 
