@@ -3,6 +3,7 @@ from email_credentials import password, sender_email
 
 # end user owns this function
 from pandas import DataFrame
+from matplotlib import pyplot as plt
 import numpy as np
 
 import random 
@@ -14,13 +15,25 @@ def make_random_figure():
     df['Stock_Index_Price'] += 10
     return df
 
-rec_email = "deepkernel1@gmail.com"
+rec_email = "b.tengelsen@gmail.com"
+
 
 if __name__ == "__main__":
 
-    figure_list = [make_random_figure() for i in range(5)]
-    title_list = ['a', 'b', 'c', 'd']
-    caption_list = ['aa', 'bb', 'cc', 'dd']
+    fig1, ax1 = plt.subplots(1,1, figsize=(10,5))
+    ax1.plot([1,2,3,4,5], [1,4,2,4,1])
+
+    fig2, ax2 = plt.subplots(1,1, figsize=(10,5))
+    ax2.plot([1,2,3,4,5], [2,2,2,2,3])
+
+    fig3 = make_random_figure()
+    fig0 = make_random_figure()
+
+
+    figure_list = [fig0, fig1, fig2, fig3]
+    caption_list = ['caption ' + str(i) for i in range(5)]
+    title_list = ['title ' + str(i) for i in range(5)]
+
     
     report = generate_report(figure_list, title_list, caption_list, template='green_theme.yaml', fileName ='myfile.html')
     embed = embed_email(rec_email, report, text="This message was sent with python", subject=str(number),  del_files='yes', fileName ='myfile.html')
