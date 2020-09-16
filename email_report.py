@@ -10,6 +10,10 @@ import yaml
 import mpld3
 # deleting files
 import os
+#new libs:
+import urllib
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+from io import StringIO
 
 
 def connect_email(sender_email, password):
@@ -58,7 +62,12 @@ def make_html_from_figure_object(fig):
 
     """
     if str(fig.__class__) == "<class 'matplotlib.figure.Figure'>":
-        html_string = mpld3.fig_to_html(fig)
+        canvas = FigureCanvas(fig)
+        png_output = StringIO.StringIO()
+        canvas.print_png(png_output)
+        data = png_output.getvalue().encode('base64')
+          
+        html_string = '<img src="data:image/png;base64,{}">'.format(urllib.quote(data.rstrip('\n')))
     
     elif str(type(fig)) == "<class 'pandas.core.frame.DataFrame'>":
         html_string = fig.to_html()
