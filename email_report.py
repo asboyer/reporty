@@ -59,7 +59,7 @@ def matplot_png(fig, fileName, matplot_count):
     fig.savefig(fileName)
     return fileName
 
-def make_html_from_figure_object(fig, alt_text):
+def make_html_from_figure_object(fig, alt_text, matplot_names):
     """Turns a 'figure' into html
 
     Args: 
@@ -78,11 +78,17 @@ def make_html_from_figure_object(fig, alt_text):
         fig.savefig(buf, format="png")
         # Embed the result in the html output.
         data = base64.b64encode(buf.getbuffer()).decode("ascii")
-        html_string = "<div> \n <img src=\"data:image/png;base64,{data}\" alt=\"{alt_text}\" /> \n <div>".format(data=data, alt_text=alt_text)
+        html_string0 = "<img src=\"data:image/png;base64,{data}\" /> \n ".format(data=data)
+
+        for i in range(len(matplot_names)):
+            
+            html_string1 = "<img src=\"cid:{image}\" /> \n".format(image=matplot_names[i].replace('.png', ''))
         
-        #this test works:
-        #html_string = "<img src=\"https://blog.mailtrap.io/wp-content/uploads/2018/11/blog-illustration-email-embedding-images.png?w=640\" alt=\"img\" />"
-        # check this out: https://www.campaignmonitor.com/blog/email-marketing/2019/04/embedded-images-in-html-email/
+        html_string = html_string0 + '\n' + html_string1
+    
+    #TO DO: get rid of broken image icon
+    
+    
     elif str(type(fig)) == "<class 'pandas.core.frame.DataFrame'>":
         html_string = fig.to_html(border=0)
     
@@ -152,7 +158,7 @@ def generate_report(figure_list, title_list=0, caption_list=0, fileName='Final.h
         else:
             pass
             
-        data_html.append(make_html_from_figure_object(fig, alt_text))
+        data_html.append(make_html_from_figure_object(fig, alt_text, matplot_names))
         # get list of header & captions html
         header_html.append(header_template.format(title=title, caption=caption))
     
@@ -198,8 +204,12 @@ def embed_email(rec_email, report, text="Default text", message = MIMEMultipart(
     
     if len(fileNames) > 0:
         for i in range(len(fileNames)):
-            img_data = open(fileNames[i], 'rb').read()
-            image = MIMEImage(img_data, name=os.path.basename(fileNames[i]))
+            fp = open(fileNames[i], 'rb')
+            image = MIMEImage(fp.read(), filename=fileNames[i])
+            encoders.encode_base64(image)
+            fp.close()
+            image.add_header('Content-ID', '<' + fileNames[i].replace('.png', '') + '>')
+            image.add_header('Content-Disposition', 'inline', filename=fileNames[i])
             message.attach(image)
     else:
         pass
