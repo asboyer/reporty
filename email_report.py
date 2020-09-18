@@ -53,30 +53,7 @@ def prepend(data_html, header_html):
     return(full_html) 
 
 
-def convert_fig_to_html(fig):
-  """ Convert Matplotlib figure 'fig' into a <img> tag for HTML use using base64 encoding. """
-  
-  canvas = FigureCanvas(fig)
-  png_output = StringIO()
-  canvas.print_png(png_output)
-  data = png_output.getvalue().encode('base64')
-  
-  return '<img src="data:image/png;base64,{}">'.format(urllib.quote(data.rstrip('\n')))
-
-
-def hello(fig):
-    import base64
-    from io import BytesIO   
-
-    #Generate the figure **without using pyplot**.
-    buf = BytesIO()
-    fig.savefig(buf, format="png")
-    # Embed the result in the html output.
-    data = base64.b64encode(buf.getbuffer()).decode("ascii")
-    return "<img src='data:image/png;base64,{data}'/>".format(data=data)
-
-
-def make_html_from_figure_object(fig):
+def make_html_from_figure_object(fig, alt_text):
     """Turns a 'figure' into html
 
     Args: 
@@ -87,13 +64,19 @@ def make_html_from_figure_object(fig):
 
     """
     if str(fig.__class__) == "<class 'matplotlib.figure.Figure'>":
-        canvas = FigureCanvas(fig)
-        png_output = io.StringIO()
-        canvas.print_png(png_output)
-        data = png_output.getvalue().encode('base64')
-          
-        html_string = '<img src="data:image/png;base64,{}">'.format(urllib.quote(data.rstrip('\n')))
+        import base64
+        from io import BytesIO   
     
+        #Generate the figure **without using pyplot**.
+        buf = BytesIO()
+        fig.savefig(buf, format="png")
+        # Embed the result in the html output.
+        data = base64.b64encode(buf.getbuffer()).decode("ascii")
+        html_string = "<div> \n <img src=\"data:image/png;base64,{data}\" alt=\"{alt_text}\" /> \n <div>".format(data=data, alt_text=alt_text)
+        
+        #this test works:
+        #html_string = "<img src=\"https://blog.mailtrap.io/wp-content/uploads/2018/11/blog-illustration-email-embedding-images.png?w=640\" alt=\"img\" />"
+        # check this out: https://www.campaignmonitor.com/blog/email-marketing/2019/04/embedded-images-in-html-email/
     elif str(type(fig)) == "<class 'pandas.core.frame.DataFrame'>":
         html_string = fig.to_html()
     
@@ -104,7 +87,7 @@ def make_html_from_figure_object(fig):
         
 
 
-def generate_report(figure_list, title_list=0, caption_list=0, fileName='Final.html', template='basic_theme.yaml'):
+def generate_report(figure_list, title_list=0, caption_list=0, fileName='Final.html', template='basic_theme.yaml', alt_text='Matplotlib figure'):
     """ Takes list of figures, titles, and captions to make an html report
 
     Args:
@@ -153,7 +136,7 @@ def generate_report(figure_list, title_list=0, caption_list=0, fileName='Final.h
     for fig, title, caption in zip(figure_list, title_list, caption_list):
         # get list of figure html
         #html_fig = fig.to_html()
-        data_html.append(make_html_from_figure_object(fig))
+        data_html.append(make_html_from_figure_object(fig, alt_text))
 
         # get list of header & captions html
         header_html.append(header_template.format(title=title, caption=caption))
