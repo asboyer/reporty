@@ -57,8 +57,8 @@ def prepend(data_html, header_html):
 def matplot_png(fig, fileName, matplot_count):
     fileName = fileName.replace('.html','{}.png')
     png_list = []
-    for i in range(len(matplot_count)+1):
-        fileName = fileName.format("_" + str((i+1)))
+    fileName = fileName.format(str(i)for i in range(len(matplot_count)+1))
+    for i in ran
         fig.savefig(fileName)
         png_list.append(fileName)
     return png_list
@@ -153,8 +153,6 @@ def generate_report(figure_list, title_list=0, caption_list=0, fileName='Final.h
         else:
             pass
         if str(fig.__class__) == "<class 'matplotlib.figure.Figure'>":
-            matplot_png(fig, fileName, matplot_count)
-            
         data_html.append(make_html_from_figure_object(fig, alt_text))
 
         # get list of header & captions html
