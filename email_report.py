@@ -63,7 +63,7 @@ def make_html_from_figure_object(fig):
     """
     if str(fig.__class__) == "<class 'matplotlib.figure.Figure'>":
         canvas = FigureCanvas(fig)
-        png_output = StringIO.StringIO()
+        png_output = io.StringIO()
         canvas.print_png(png_output)
         data = png_output.getvalue().encode('base64')
           
