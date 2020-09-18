@@ -13,6 +13,7 @@ import mpld3
 from matplotlib import pyplot as plt
 # deleting files
 import os
+import re
 import urllib
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from io import StringIO
@@ -52,6 +53,15 @@ def prepend(data_html, header_html):
  
     return(full_html) 
 
+
+def matplot_png(fig, fileName, matplot_count):
+    fileName = fileName.replace('.html','{}.png')
+    png_list = []
+    for i in range(len(matplot_count)+1):
+        fileName = fileName.format("_" + str((i+1)))
+        fig.savefig(fileName)
+        png_list.append(fileName)
+    return png_list
 
 def make_html_from_figure_object(fig, alt_text):
     """Turns a 'figure' into html
@@ -136,6 +146,15 @@ def generate_report(figure_list, title_list=0, caption_list=0, fileName='Final.h
     for fig, title, caption in zip(figure_list, title_list, caption_list):
         # get list of figure html
         #html_fig = fig.to_html()
+        matplot_count = []
+        png_list = []
+        if str(fig.__class__) == "<class 'matplotlib.figure.Figure'>":
+            matplot_count.append("r")
+        else:
+            pass
+        if str(fig.__class__) == "<class 'matplotlib.figure.Figure'>":
+            matplot_png(fig, fileName, matplot_count)
+            
         data_html.append(make_html_from_figure_object(fig, alt_text))
 
         # get list of header & captions html
@@ -183,7 +202,7 @@ def embed_email(rec_email, report, text="Default text", message = MIMEMultipart(
             os.remove(fileName)
         else:
             pass
-        
+    
     else:
         pass
     return final_message

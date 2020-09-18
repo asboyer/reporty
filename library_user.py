@@ -22,6 +22,7 @@ if __name__ == "__main__":
 
     fig1, ax1 = plt.subplots(1,1, figsize=(10,5))
     ax1.plot([1,2,3,4,5], [1,4,2,4,1])
+    
 
     fig2, ax2 = plt.subplots(1,1, figsize=(10,5))
     ax2.plot([1,2,3,4,5], [2,2,2,2,3])
