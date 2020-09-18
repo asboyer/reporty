@@ -88,7 +88,7 @@ def make_html_from_figure_object(fig, alt_text):
         #html_string = "<img src=\"https://blog.mailtrap.io/wp-content/uploads/2018/11/blog-illustration-email-embedding-images.png?w=640\" alt=\"img\" />"
         # check this out: https://www.campaignmonitor.com/blog/email-marketing/2019/04/embedded-images-in-html-email/
     elif str(type(fig)) == "<class 'pandas.core.frame.DataFrame'>":
-        html_string = fig.to_html()
+        html_string = fig.to_html(border=0)
     
     else:
         raise Exception('Invalid figure object - must be a pandas dataframe or a matplotlib figure object')
