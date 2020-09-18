@@ -37,7 +37,7 @@ if __name__ == "__main__":
 
     
     report = generate_report(figure_list, title_list, caption_list, template='green_theme.yaml', fileName ='myfile.html', alt_text='this text is just in case email is stupid')
-    embed = embed_email(rec_email, report, text="This message was sent with python", subject=str(number),  del_files='no', fileName ='myfile.html')
+    embed = embed_email(rec_email, report, text="This message was sent with python", subject=str(number),  del_files='yes', fileName ='myfile.html')
     server = connect_email(sender_email, password)
     send_email(server, rec_email, embed)
     
