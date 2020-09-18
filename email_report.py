@@ -1,5 +1,7 @@
 # for email:
 import smtplib
+import numpy as np
+import pandas as pd
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase 
@@ -8,9 +10,9 @@ from email_credentials import password, sender_email
 import templates as html_templates
 import yaml
 import mpld3
+from matplotlib import pyplot as plt
 # deleting files
 import os
-#new libs:
 import urllib
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from io import StringIO
@@ -49,6 +51,29 @@ def prepend(data_html, header_html):
         full_html.append(single_figure_html)
  
     return(full_html) 
+
+
+def convert_fig_to_html(fig):
+  """ Convert Matplotlib figure 'fig' into a <img> tag for HTML use using base64 encoding. """
+  
+  canvas = FigureCanvas(fig)
+  png_output = StringIO()
+  canvas.print_png(png_output)
+  data = png_output.getvalue().encode('base64')
+  
+  return '<img src="data:image/png;base64,{}">'.format(urllib.quote(data.rstrip('\n')))
+
+
+def hello(fig):
+    import base64
+    from io import BytesIO   
+
+    #Generate the figure **without using pyplot**.
+    buf = BytesIO()
+    fig.savefig(buf, format="png")
+    # Embed the result in the html output.
+    data = base64.b64encode(buf.getbuffer()).decode("ascii")
+    return "<img src='data:image/png;base64,{data}'/>".format(data=data)
 
 
 def make_html_from_figure_object(fig):
@@ -180,4 +205,30 @@ def embed_email(rec_email, report, text="Default text", message = MIMEMultipart(
         pass
     return final_message
 
+
+def make_random_figure():
+    data =  np.random.normal(size=(19, 2))
+    df = pd.DataFrame(data, columns=['Goldfish Sales','Stock_Index_Price'])
+    df['Stock_Index_Price'] += 9
+    return df
+
+
+if __name__ == "__main__":
+
+
+    fig1, ax1 = plt.subplots(1,1, figsize=(10,5))
+    ax1.plot([1,2,3,4,5], [1,4,2,4,1])
+
+    fig2, ax2 = plt.subplots(1,1, figsize=(10,5))
+    ax2.plot([1,2,3,4,5], [2,2,2,2,3])
+
+    fig3 = make_random_figure()
+    fig0 = make_random_figure()
+
+
+    figure_list = [fig0, fig1, fig2, fig3]
+    caption_list = ['caption' + str(i) for i in range(5)]
+    title_list = ['title' + str(i) for i in range(5)]
+ 
+    html_report = generate_report(figure_list, title_list=title_list, caption_list=caption_list, fileName='Final_plots.html', template='basic_theme.yaml')
 
