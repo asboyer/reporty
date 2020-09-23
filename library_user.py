@@ -22,6 +22,7 @@ if __name__ == "__main__":
 
     fig1, ax1 = plt.subplots(1,1, figsize=(10,5))
     ax1.plot([1,2,3,4,5], [1,4,2,4,1])
+    
 
     fig2, ax2 = plt.subplots(1,1, figsize=(10,5))
     ax2.plot([1,2,3,4,5], [2,2,2,2,3])
@@ -35,8 +36,8 @@ if __name__ == "__main__":
     title_list = ['title ' + str(i) for i in range(5)]
 
     
-    report = generate_report(figure_list, title_list, caption_list, template='green_theme.yaml', fileName ='myfile.html', alt_text='this text is just in case email is stupid')
-    embed = embed_email(rec_email, report, text="This message was sent with python", subject=str(number),  del_files='no', fileName ='myfile.html')
+    report = generate_report(figure_list, title_list, caption_list, template='basic_theme', fileName ='myfile.html', alt_text='this text is just in case email is stupid')
+    embed = embed_email(rec_email, report, text="This message was sent with python", subject=str(number),  del_files='yes', fileName ='myfile.html')
     server = connect_email(sender_email, password)
     send_email(server, rec_email, embed)
     

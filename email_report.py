@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from email.mime.image import MIMEImage
 from email.mime.base import MIMEBase 
 from email import encoders
 from email_credentials import password, sender_email
@@ -13,6 +14,7 @@ import mpld3
 from matplotlib import pyplot as plt
 # deleting files
 import os
+import re
 import urllib
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from io import StringIO
@@ -52,8 +54,12 @@ def prepend(data_html, header_html):
  
     return(full_html) 
 
+def matplot_png(fig, fileName, matplot_count):
+    fileName = fileName.replace('.html','_matplot_figure{}.png'.format(len(matplot_count)))
+    fig.savefig(fileName)
+    return fileName
 
-def make_html_from_figure_object(fig, alt_text):
+def make_html_from_figure_object(fig, alt_text, matplot_names, image, image1):
     """Turns a 'figure' into html
 
     Args: 
@@ -72,13 +78,19 @@ def make_html_from_figure_object(fig, alt_text):
         fig.savefig(buf, format="png")
         # Embed the result in the html output.
         data = base64.b64encode(buf.getbuffer()).decode("ascii")
-        html_string = "<div> \n <img src=\"data:image/png;base64,{data}\" alt=\"{alt_text}\" /> \n <div>".format(data=data, alt_text=alt_text)
-        
-        #this test works:
-        #html_string = "<img src=\"https://blog.mailtrap.io/wp-content/uploads/2018/11/blog-illustration-email-embedding-images.png?w=640\" alt=\"img\" />"
-        # check this out: https://www.campaignmonitor.com/blog/email-marketing/2019/04/embedded-images-in-html-email/
+        #html_string0 = "<img src=\"data:image/png;base64,{data}\" /> \n ".format(data=data)
+        html_string0 = ("\n" + image1 + "\n").format(data=data)
+        for i in range(len(matplot_names)):
+            
+            #html_string1 = "<img src=\"cid:{image}\" /> \n".format(image=matplot_names[i].replace('.png', ''))
+            html_string1 = ("\n" + image + "\n").format(image=matplot_names[i].replace('.png', ''))
+        html_string = html_string0 + '\n' + html_string1
+    
+    #TO DO: get rid of broken image icon
+    
+    
     elif str(type(fig)) == "<class 'pandas.core.frame.DataFrame'>":
-        html_string = fig.to_html()
+        html_string = fig.to_html(border=0)
     
     else:
         raise Exception('Invalid figure object - must be a pandas dataframe or a matplotlib figure object')
@@ -88,6 +100,9 @@ def make_html_from_figure_object(fig, alt_text):
 
 
 def generate_report(figure_list, title_list=0, caption_list=0, fileName='Final.html', template='basic_theme.yaml', alt_text='Matplotlib figure'):
+    
+    template = template + ".yaml"
+    
     """ Takes list of figures, titles, and captions to make an html report
 
     Args:
@@ -96,6 +111,7 @@ def generate_report(figure_list, title_list=0, caption_list=0, fileName='Final.h
         caption_list(list):
         filename (str): name of html file - default is 'Final.html'
 
+        
     Returns:
         writes an html file
     """
@@ -126,21 +142,38 @@ def generate_report(figure_list, title_list=0, caption_list=0, fileName='Final.h
     html_template = template_dict['html_template']
     header_template = template_dict['header']
     css = template_dict['css']
+    image = template_dict['image']
+    image1 = template_dict['image1']
     
     data_html = []
     header_html = []
     caption_html = []
     figures_html = "figures.html"
+    matplot_count = []
+    matplot_names = []
     # creates the html file, converts into into text
     
     for fig, title, caption in zip(figure_list, title_list, caption_list):
         # get list of figure html
         #html_fig = fig.to_html()
-        data_html.append(make_html_from_figure_object(fig, alt_text))
-
+        if str(fig.__class__) == "<class 'matplotlib.figure.Figure'>":
+            matplot_count.append("r")
+            matplot_names.append(matplot_png(fig, fileName, matplot_count))
+            
+            
+        else:
+            pass
+            
+        data_html.append(make_html_from_figure_object(fig, alt_text, matplot_names, image, image1))
         # get list of header & captions html
         header_html.append(header_template.format(title=title, caption=caption))
-
+    
+    if len(matplot_names) > 0:
+        file = open("filenames.txt","w+")
+        my_string = (str(matplot_names)).replace("'",'')
+        file.write(my_string)
+        file.close()
+    
     newData = prepend(data_html, header_html)
         
     here_html = '\n'.join(newData)
@@ -156,6 +189,17 @@ def generate_report(figure_list, title_list=0, caption_list=0, fileName='Final.h
     return html2
 
 def embed_email(rec_email, report, text="Default text", message = MIMEMultipart(), fileName = 'Final.html', del_files="no", subject="Email Report"):
+    
+    if os.path.exists("filenames.txt"):
+        file = open("filenames.txt", "r")
+        filenames = file.read()
+        file.close()
+        os.remove("filenames.txt")
+        fileNames = filenames.strip('][').split(', ')
+    
+    else:
+        pass
+    
     message["From"] = sender_email
     message["To"] = rec_email
     message["Subject"] = subject
@@ -164,6 +208,17 @@ def embed_email(rec_email, report, text="Default text", message = MIMEMultipart(
     attatchment = MIMEText(report, "html")
     message.attach(attatchment) 
     
+    if len(fileNames) > 0:
+        for i in range(len(fileNames)):
+            fp = open(fileNames[i], 'rb')
+            image = MIMEImage(fp.read(), filename=fileNames[i])
+            encoders.encode_base64(image)
+            fp.close()
+            image.add_header('Content-ID', '<' + fileNames[i].replace('.png', '') + '>')
+            image.add_header('Content-Disposition', 'inline', filename=fileNames[i])
+            message.attach(image)
+    else:
+        pass
     attach_file = open(fileName, 'rb')
     payload = MIMEBase('application', 'octate-stream')
     payload.set_payload(attach_file.read())
@@ -183,7 +238,9 @@ def embed_email(rec_email, report, text="Default text", message = MIMEMultipart(
             os.remove(fileName)
         else:
             pass
-        
+        for i in range(len(fileNames)):
+            if os.path.exists(fileNames[i]):
+                os.remove(fileNames[i])
     else:
         pass
     return final_message
@@ -196,7 +253,7 @@ def make_random_figure():
     return df
 
 
-if __name__ == "__main__":
+"""if __name__ == "__main__":
 
 
     fig1, ax1 = plt.subplots(1,1, figsize=(10,5))
@@ -214,4 +271,4 @@ if __name__ == "__main__":
     title_list = ['title' + str(i) for i in range(5)]
  
     html_report = generate_report(figure_list, title_list=title_list, caption_list=caption_list, fileName='Final_plots.html', template='basic_theme.yaml')
-
+"""
