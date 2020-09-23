@@ -59,7 +59,7 @@ def matplot_png(fig, fileName, matplot_count):
     fig.savefig(fileName)
     return fileName
 
-def make_html_from_figure_object(fig, alt_text, matplot_names):
+def make_html_from_figure_object(fig, alt_text, matplot_names, image, image1):
     """Turns a 'figure' into html
 
     Args: 
@@ -78,12 +78,12 @@ def make_html_from_figure_object(fig, alt_text, matplot_names):
         fig.savefig(buf, format="png")
         # Embed the result in the html output.
         data = base64.b64encode(buf.getbuffer()).decode("ascii")
-        html_string0 = "<img src=\"data:image/png;base64,{data}\" /> \n ".format(data=data)
-
+        #html_string0 = "<img src=\"data:image/png;base64,{data}\" /> \n ".format(data=data)
+        html_string0 = ("\n" + image1 + "\n").format(data=data)
         for i in range(len(matplot_names)):
             
-            html_string1 = "<img src=\"cid:{image}\" /> \n".format(image=matplot_names[i].replace('.png', ''))
-        
+            #html_string1 = "<img src=\"cid:{image}\" /> \n".format(image=matplot_names[i].replace('.png', ''))
+            html_string1 = ("\n" + image + "\n").format(image=matplot_names[i].replace('.png', ''))
         html_string = html_string0 + '\n' + html_string1
     
     #TO DO: get rid of broken image icon
@@ -100,6 +100,9 @@ def make_html_from_figure_object(fig, alt_text, matplot_names):
 
 
 def generate_report(figure_list, title_list=0, caption_list=0, fileName='Final.html', template='basic_theme.yaml', alt_text='Matplotlib figure'):
+    
+    template = template + ".yaml"
+    
     """ Takes list of figures, titles, and captions to make an html report
 
     Args:
@@ -108,6 +111,7 @@ def generate_report(figure_list, title_list=0, caption_list=0, fileName='Final.h
         caption_list(list):
         filename (str): name of html file - default is 'Final.html'
 
+        
     Returns:
         writes an html file
     """
@@ -138,6 +142,8 @@ def generate_report(figure_list, title_list=0, caption_list=0, fileName='Final.h
     html_template = template_dict['html_template']
     header_template = template_dict['header']
     css = template_dict['css']
+    image = template_dict['image']
+    image1 = template_dict['image1']
     
     data_html = []
     header_html = []
@@ -158,7 +164,7 @@ def generate_report(figure_list, title_list=0, caption_list=0, fileName='Final.h
         else:
             pass
             
-        data_html.append(make_html_from_figure_object(fig, alt_text, matplot_names))
+        data_html.append(make_html_from_figure_object(fig, alt_text, matplot_names, image, image1))
         # get list of header & captions html
         header_html.append(header_template.format(title=title, caption=caption))
     

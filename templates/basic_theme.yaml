@@ -25,3 +25,15 @@ header: |
     <h1>{title}</h1>
     <p>{caption}</p>
 
+
+image: |
+
+    <div>
+        <img src="cid:{image}" /> 
+    </div>
+    
+image1 : |
+
+    <div>
+        <img src="data:image/png;base64,{data}" />
+    </div>
