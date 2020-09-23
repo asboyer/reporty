@@ -188,7 +188,7 @@ def generate_report(figure_list, title_list=0, caption_list=0, fileName='Final.h
         
     return html2
 
-def embed_email(rec_email, report, text="Default text", message = MIMEMultipart(), fileName = 'Final.html', del_files="no", subject="Email Report"):
+def embed_report(rec_email, report, text="Default text", message = MIMEMultipart(), fileName = 'Final.html', del_files="no", subject="Email Report"):
     
     if os.path.exists("filenames.txt"):
         file = open("filenames.txt", "r")
@@ -252,23 +252,4 @@ def make_random_figure():
     df['Stock_Index_Price'] += 9
     return df
 
-
-"""if __name__ == "__main__":
-
-
-    fig1, ax1 = plt.subplots(1,1, figsize=(10,5))
-    ax1.plot([1,2,3,4,5], [1,4,2,4,1])
-
-    fig2, ax2 = plt.subplots(1,1, figsize=(10,5))
-    ax2.plot([1,2,3,4,5], [2,2,2,2,3])
-
-    fig3 = make_random_figure()
-    fig0 = make_random_figure()
-
-
-    figure_list = [fig0, fig1, fig2, fig3]
-    caption_list = ['caption' + str(i) for i in range(5)]
-    title_list = ['title' + str(i) for i in range(5)]
- 
-    html_report = generate_report(figure_list, title_list=title_list, caption_list=caption_list, fileName='Final_plots.html', template='basic_theme.yaml')
-"""
+# Written by Andrew Boyer and Ben Tengleson 
