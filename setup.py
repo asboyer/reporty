@@ -3,15 +3,15 @@ import os
 
 VERSION = "0.0.1"
 
-DESCRIPTION = "EmailReport is a package"
+DESCRIPTION = "Reporty is a package"
 
 LICENSE = "BSD"
 
-DESCRIPTION = "a"
+DESCRIPTION = "This python library contains functions that help with sending formatted data"
 
-LONG_DESCRIPTION = "i"
+LONG_DESCRIPTION = "Coming soon"
 
-setup(name='emailreport',
+setup(name='reporty',
       packages=find_packages(),
       version=VERSION,
       description=DESCRIPTION,

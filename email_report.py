@@ -252,5 +252,5 @@ def make_random_figure():
     df['Stock_Index_Price'] += 9
     return df
 
-# ericxie6
+
 # Written by Andrew Boyer and Ben Tengleson 
