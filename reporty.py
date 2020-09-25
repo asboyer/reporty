@@ -7,8 +7,6 @@ from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
 from email.mime.base import MIMEBase 
 from email import encoders
-from email_credentials import password, sender_email
-import templates as html_templates
 import yaml
 import mpld3
 from matplotlib import pyplot as plt
@@ -36,7 +34,7 @@ def connect_email(sender_email, password):
     return server
 
     
-def send_email(server, rec_email, message):
+def send_email(server, rec_email, message, sender_email):
     # sends email
     server.sendmail(sender_email, rec_email, message)
     print("Email has been sent to " + rec_email)
@@ -188,7 +186,7 @@ def generate_report(figure_list, title_list=0, caption_list=0, fileName='Final.h
         
     return html2
 
-def embed_report(rec_email, report, text="Default text", message = MIMEMultipart(), fileName = 'Final.html', del_files="no", subject="Email Report"):
+def embed_report(rec_email, report, sender_email, password, text="Default text", message = MIMEMultipart(), fileName = 'Final.html', del_files="no", subject="Email Report"):
     
     if os.path.exists("filenames.txt"):
         file = open("filenames.txt", "r")
