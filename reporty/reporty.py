@@ -1,4 +1,3 @@
-# for email:
 import smtplib
 import numpy as np
 import pandas as pd
@@ -7,8 +6,6 @@ from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
 from email.mime.base import MIMEBase 
 from email import encoders
-from email_credentials import password, sender_email
-import templates as html_templates
 import yaml
 import mpld3
 from matplotlib import pyplot as plt
