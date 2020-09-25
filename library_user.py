@@ -15,7 +15,7 @@ def make_random_figure():
     df['Stock_Index_Price'] += 10
     return df
 
-rec_email = "deepkernel1@gmail.com"
+rec_email = "ericxie6@gmail.com"
 
 
 if __name__ == "__main__":
