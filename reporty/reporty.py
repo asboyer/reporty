@@ -133,7 +133,7 @@ def generate_report(figure_list, title_list=0, caption_list=0, fileName='Final.h
     while len(caption_list) < len(figure_list):
         caption_list.append("Default Caption")
             
-    with open('templates/'+template) as file:
+    with open(os.path.abspath('templates/' + template)) as file:
         template_dict = yaml.safe_load(file)
 
     html_template = template_dict['html_template']
