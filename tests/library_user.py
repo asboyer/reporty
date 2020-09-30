@@ -1,4 +1,4 @@
-from email_report import connect_email, send_email, embed_report, generate_report
+from reporty import connect_email, send_email, embed_report, generate_report
 from email_credentials import password, sender_email
 
 # end user owns this function
@@ -15,7 +15,7 @@ def make_random_figure():
     df['Stock_Index_Price'] += 10
     return df
 
-rec_email = "ericxie6@gmail.com"
+rec_email = "deepkernel1@gmail.com"
 
 
 if __name__ == "__main__":
