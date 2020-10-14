@@ -1,0 +1,11 @@
+Metadata-Version: 1.0
+Name: reporty
+Version: 0.0.3
+Summary: This python library contains functions that help with sending formatted data
+Home-page: https://github.com/asboyer2/email_report
+Author: Andrew S. Boyer and Ben Tengleson
+Author-email: asboyer@gmail.com
+License: BSD
+Description: Coming soon
+Keywords: report,email
+Platform: UNKNOWN

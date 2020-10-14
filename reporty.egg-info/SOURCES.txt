@@ -1,0 +1,8 @@
+README.md
+setup.py
+reporty/__init__.py
+reporty/reporty.py
+reporty.egg-info/PKG-INFO
+reporty.egg-info/SOURCES.txt
+reporty.egg-info/dependency_links.txt
+reporty.egg-info/top_level.txt

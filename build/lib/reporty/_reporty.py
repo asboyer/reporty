@@ -16,7 +16,11 @@ import urllib
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from io import StringIO
 
+__all__ = ['generate_report', 'embed_report', 'connect_email', 'send_email']
+
 # 
+
+
 def connect_email(sender_email, password):
     """ sets up a smtp server
     Args:
@@ -133,7 +137,7 @@ def generate_report(figure_list, title_list=0, caption_list=0, fileName='Final.h
     while len(caption_list) < len(figure_list):
         caption_list.append("Default Caption")
             
-    with open(os.path.abspath('templates/' + template)) as file:
+    with open(templates_dir + template) as file:
         template_dict = yaml.safe_load(file)
 
     html_template = template_dict['html_template']
