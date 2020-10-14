@@ -13,7 +13,7 @@ html_template: |
   
 css: |
     body {
-      background-color: linen;
+      background-color: green;
     }
     
     h1 {
@@ -24,7 +24,6 @@ css: |
 header: |
     <h1>{title}</h1>
     <p>{caption}</p>
-
 
 image: |
 
