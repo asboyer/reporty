@@ -7,7 +7,6 @@ from email.mime.image import MIMEImage
 from email.mime.base import MIMEBase 
 from email import encoders
 import yaml
-import mpld3
 from matplotlib import pyplot as plt
 # deleting files
 import os
