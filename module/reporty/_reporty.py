@@ -261,7 +261,6 @@ def make_random_figure():
 
 
 # Written by Andrew Boyer and Ben Tengleson 
-=======
 # def embed_report(rec_email, report, text="Default text", message = MIMEMultipart(), fileName = 'Final.html', del_files="no", subject="Email Report"):
     
     # if os.path.exists("filenames.txt"):
