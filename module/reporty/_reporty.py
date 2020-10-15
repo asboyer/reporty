@@ -15,7 +15,6 @@ import urllib
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from io import StringIO
 
-<<<<<<< HEAD:module/reporty/_reporty.py
 __all__ = ['generate_report', 'embed_report', 'connect_email', 'send_email']
 from os import path
 templates_dir = path.join(path.dirname(__file__), 'templates')
@@ -43,10 +42,10 @@ def send_email(server, rec_email, message, sender_email):
     server.sendmail(sender_email, rec_email, message)
     print("Email has been sent to " + rec_email)
     server.quit()
-=======
+
 
 __all__ = ['generate_report']
->>>>>>> 196e5f7d6a72b63bc21ff63ec43db2e7086ecd90:reporty/reporty.py
+
 
  
 def prepend(data_html, header_html): 
@@ -196,7 +195,6 @@ def generate_report(figure_list, title_list=0, caption_list=0, fileName='Final.h
         
     return html2
 
-<<<<<<< HEAD:module/reporty/_reporty.py
 def embed_report(rec_email, report, sender_email, password, text="Default text", message = MIMEMultipart(), fileName = 'Final.html', del_files="no", subject="Email Report"):
     
     if os.path.exists("filenames.txt"):
@@ -320,4 +318,3 @@ def make_random_figure():
     # else:
         # pass
     # return final_message
->>>>>>> 196e5f7d6a72b63bc21ff63ec43db2e7086ecd90:reporty/reporty.py
