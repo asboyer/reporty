@@ -4,7 +4,7 @@ import pandas as pd
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
-from email.mime.base import MIMEBase 
+from email.mime.base import MIMEBase
 from email import encoders
 import yaml
 from matplotlib import pyplot as plt
@@ -15,6 +15,7 @@ import urllib
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from io import StringIO
 
+<<<<<<< HEAD:module/reporty/_reporty.py
 __all__ = ['generate_report', 'embed_report', 'connect_email', 'send_email']
 from os import path
 templates_dir = path.join(path.dirname(__file__), 'templates')
@@ -42,9 +43,14 @@ def send_email(server, rec_email, message, sender_email):
     server.sendmail(sender_email, rec_email, message)
     print("Email has been sent to " + rec_email)
     server.quit()
+=======
 
+__all__ = ['generate_report']
+>>>>>>> 196e5f7d6a72b63bc21ff63ec43db2e7086ecd90:reporty/reporty.py
+
+ 
 def prepend(data_html, header_html): 
-      
+     
     # Using format() 
     full_html = []
     for data, header in zip(data_html, header_html):
@@ -55,10 +61,12 @@ def prepend(data_html, header_html):
  
     return(full_html) 
 
+
 def matplot_png(fig, fileName, matplot_count):
     fileName = fileName.replace('.html','_matplot_figure{}.png'.format(len(matplot_count)))
     fig.savefig(fileName)
     return fileName
+
 
 def make_html_from_figure_object(fig, alt_text, matplot_names, image, image1):
     """Turns a 'figure' into html
@@ -96,8 +104,7 @@ def make_html_from_figure_object(fig, alt_text, matplot_names, image, image1):
     else:
         raise Exception('Invalid figure object - must be a pandas dataframe or a matplotlib figure object')
     
-    return html_string
-        
+    return html_string        
 
 
 def generate_report(figure_list, title_list=0, caption_list=0, fileName='Final.html', template='basic_theme.yaml', alt_text='Matplotlib figure'):
@@ -189,6 +196,7 @@ def generate_report(figure_list, title_list=0, caption_list=0, fileName='Final.h
         
     return html2
 
+<<<<<<< HEAD:module/reporty/_reporty.py
 def embed_report(rec_email, report, sender_email, password, text="Default text", message = MIMEMultipart(), fileName = 'Final.html', del_files="no", subject="Email Report"):
     
     if os.path.exists("filenames.txt"):
@@ -255,3 +263,61 @@ def make_random_figure():
 
 
 # Written by Andrew Boyer and Ben Tengleson 
+=======
+# def embed_report(rec_email, report, text="Default text", message = MIMEMultipart(), fileName = 'Final.html', del_files="no", subject="Email Report"):
+    
+    # if os.path.exists("filenames.txt"):
+        # file = open("filenames.txt", "r")
+        # filenames = file.read()
+        # file.close()
+        # os.remove("filenames.txt")
+        # fileNames = filenames.strip('][').split(', ')
+    
+    # else:
+        # pass
+    
+    # message["From"] = sender_email
+    # message["To"] = rec_email
+    # message["Subject"] = subject
+    # message.attach(MIMEText(text, 'plain'))
+    
+    # attatchment = MIMEText(report, "html")
+    # message.attach(attatchment) 
+    
+    # if len(fileNames) > 0:
+        # for i in range(len(fileNames)):
+            # fp = open(fileNames[i], 'rb')
+            # image = MIMEImage(fp.read(), filename=fileNames[i])
+            # encoders.encode_base64(image)
+            # fp.close()
+            # image.add_header('Content-ID', '<' + fileNames[i].replace('.png', '') + '>')
+            # image.add_header('Content-Disposition', 'inline', filename=fileNames[i])
+            # message.attach(image)
+    # else:
+        # pass
+    # attach_file = open(fileName, 'rb')
+    # payload = MIMEBase('application', 'octate-stream')
+    # payload.set_payload(attach_file.read())
+    # encoders.encode_base64(payload) #encode the attachment
+    # #add payload header with filename
+    # payload.add_header('Content-Disposition', 'attachment', filename=fileName)
+    # message.attach(payload)
+    # attach_file.close()
+    
+    # final_message = message.as_string()
+    # if del_files == 'yes':
+        # if os.path.exists("Final.html"):
+            # os.remove("Final.html")
+        # else:
+            # pass
+        # if os.path.exists(fileName):
+            # os.remove(fileName)
+        # else:
+            # pass
+        # for i in range(len(fileNames)):
+            # if os.path.exists(fileNames[i]):
+                # os.remove(fileNames[i])
+    # else:
+        # pass
+    # return final_message
+>>>>>>> 196e5f7d6a72b63bc21ff63ec43db2e7086ecd90:reporty/reporty.py
