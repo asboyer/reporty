@@ -1,5 +1,6 @@
 from reporty import connect_email, send_email, embed_report, generate_report
-from email_credentials import password, sender_email
+password = 'testemail999OP!'
+sender_email = 'test.email.12700@gmail.com'
 
 # end user owns this function
 from pandas import DataFrame
