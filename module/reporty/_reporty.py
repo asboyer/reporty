@@ -44,8 +44,6 @@ def send_email(server, rec_email, message, sender_email):
     server.quit()
 
 
-__all__ = ['generate_report']
-
 
  
 def prepend(data_html, header_html): 
@@ -261,59 +259,3 @@ def make_random_figure():
 
 
 # Written by Andrew Boyer and Ben Tengleson 
-# def embed_report(rec_email, report, text="Default text", message = MIMEMultipart(), fileName = 'Final.html', del_files="no", subject="Email Report"):
-    
-    # if os.path.exists("filenames.txt"):
-        # file = open("filenames.txt", "r")
-        # filenames = file.read()
-        # file.close()
-        # os.remove("filenames.txt")
-        # fileNames = filenames.strip('][').split(', ')
-    
-    # else:
-        # pass
-    
-    # message["From"] = sender_email
-    # message["To"] = rec_email
-    # message["Subject"] = subject
-    # message.attach(MIMEText(text, 'plain'))
-    
-    # attatchment = MIMEText(report, "html")
-    # message.attach(attatchment) 
-    
-    # if len(fileNames) > 0:
-        # for i in range(len(fileNames)):
-            # fp = open(fileNames[i], 'rb')
-            # image = MIMEImage(fp.read(), filename=fileNames[i])
-            # encoders.encode_base64(image)
-            # fp.close()
-            # image.add_header('Content-ID', '<' + fileNames[i].replace('.png', '') + '>')
-            # image.add_header('Content-Disposition', 'inline', filename=fileNames[i])
-            # message.attach(image)
-    # else:
-        # pass
-    # attach_file = open(fileName, 'rb')
-    # payload = MIMEBase('application', 'octate-stream')
-    # payload.set_payload(attach_file.read())
-    # encoders.encode_base64(payload) #encode the attachment
-    # #add payload header with filename
-    # payload.add_header('Content-Disposition', 'attachment', filename=fileName)
-    # message.attach(payload)
-    # attach_file.close()
-    
-    # final_message = message.as_string()
-    # if del_files == 'yes':
-        # if os.path.exists("Final.html"):
-            # os.remove("Final.html")
-        # else:
-            # pass
-        # if os.path.exists(fileName):
-            # os.remove(fileName)
-        # else:
-            # pass
-        # for i in range(len(fileNames)):
-            # if os.path.exists(fileNames[i]):
-                # os.remove(fileNames[i])
-    # else:
-        # pass
-    # return final_message
