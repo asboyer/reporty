@@ -1,4 +1,4 @@
-from reporty import generate_report
+from reporty import generate_report, embed_report, connect_email, send_email
 from email_credentials import password, sender_email
 from pandas import DataFrame
 from matplotlib import pyplot as plt
