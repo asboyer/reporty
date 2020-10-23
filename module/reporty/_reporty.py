@@ -7,18 +7,12 @@ from email.mime.image import MIMEImage
 from email.mime.base import MIMEBase
 from email import encoders
 import yaml
-from matplotlib import pyplot as plt
-# deleting files
 import os
-import re
-import urllib
-from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
-from io import StringIO
-
-__all__ = ['generate_report', 'embed_report', 'connect_email', 'send_email']
 from os import path
+
+
 templates_dir = path.join(path.dirname(__file__), 'templates')
-# 
+__all__ = ['generate_report', 'embed_report', 'connect_email', 'send_email']
 
 
 def connect_email(sender_email, password):
@@ -44,9 +38,7 @@ def send_email(server, rec_email, message, sender_email):
     server.quit()
 
 
-
- 
-def prepend(data_html, header_html): 
+def _prepend(data_html, header_html): 
      
     # Using format() 
     full_html = []
@@ -179,7 +171,7 @@ def generate_report(figure_list, title_list=0, caption_list=0, fileName='Final.h
         file.write(my_string)
         file.close()
     
-    newData = prepend(data_html, header_html)
+    newData = _prepend(data_html, header_html)
         
     here_html = '\n'.join(newData)
 

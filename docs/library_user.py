@@ -14,7 +14,7 @@ def make_random_figure():
     return df
 
 
-rec_email = "deepkernel1@gmail.com"
+rec_email = "b.tengelsen@gmail.com"
 
 
 
