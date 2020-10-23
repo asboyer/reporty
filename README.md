@@ -8,4 +8,4 @@
 ***
 finished version coming soon....
 ***
-![logo](https://github.com/asboyer2/email_report/blob/master/main_logo_cropped.png?raw=true)
+![logo](https://github.com/asboyer2/email_report/blob/master/logos/main_logo_cropped.png?raw=true)
