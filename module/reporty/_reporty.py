@@ -1,6 +1,4 @@
 import smtplib
-import numpy as np
-import pandas as pd
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
@@ -10,8 +8,7 @@ import yaml
 import os
 from os import path
 
-
-templates_dir = path.join(path.dirname(__file__), 'templates')
+_templates_dir = path.join(path.dirname(__file__), 'templates')
 __all__ = ['generate_report', 'embed_report', 'connect_email', 'send_email']
 
 
@@ -30,7 +27,6 @@ def connect_email(sender_email, password):
 
     return server
 
-    
 def send_email(server, rec_email, message, sender_email):
     # sends email
     server.sendmail(sender_email, rec_email, message)
@@ -51,13 +47,13 @@ def _prepend(data_html, header_html):
     return(full_html) 
 
 
-def matplot_png(fig, fileName, matplot_count):
+def _matplot_png(fig, fileName, matplot_count):
     fileName = fileName.replace('.html','_matplot_figure{}.png'.format(len(matplot_count)))
     fig.savefig(fileName)
     return fileName
 
 
-def make_html_from_figure_object(fig, alt_text, matplot_names, image, image1):
+def _make_html_from_figure_object(fig, alt_text, matplot_names, image, image1):
     """Turns a 'figure' into html
 
     Args: 
@@ -133,7 +129,7 @@ def generate_report(figure_list, title_list=0, caption_list=0, fileName='Final.h
     while len(caption_list) < len(figure_list):
         caption_list.append("Default Caption")
             
-    with open(templates_dir + '/' + template) as file:
+    with open(_templates_dir + '/' + template) as file:
         template_dict = yaml.safe_load(file)
 
     html_template = template_dict['html_template']
@@ -155,13 +151,13 @@ def generate_report(figure_list, title_list=0, caption_list=0, fileName='Final.h
         #html_fig = fig.to_html()
         if str(fig.__class__) == "<class 'matplotlib.figure.Figure'>":
             matplot_count.append("r")
-            matplot_names.append(matplot_png(fig, fileName, matplot_count))
+            matplot_names.append(_matplot_png(fig, fileName, matplot_count))
             
             
         else:
             pass
             
-        data_html.append(make_html_from_figure_object(fig, alt_text, matplot_names, image, image1))
+        data_html.append(_make_html_from_figure_object(fig, alt_text, matplot_names, image, image1))
         # get list of header & captions html
         header_html.append(header_template.format(title=title, caption=caption))
     
@@ -241,13 +237,5 @@ def embed_report(rec_email, report, sender_email, password, text="Default text",
     else:
         pass
     return final_message
-
-
-def make_random_figure():
-    data =  np.random.normal(size=(19, 2))
-    df = pd.DataFrame(data, columns=['Goldfish Sales','Stock_Index_Price'])
-    df['Stock_Index_Price'] += 9
-    return df
-
 
 # Written by Andrew Boyer and Ben Tengleson 
