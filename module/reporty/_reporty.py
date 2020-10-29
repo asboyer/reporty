@@ -4,8 +4,8 @@ from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
 from email.mime.base import MIMEBase
 from email import encoders
-import yaml
-import os
+import yaml as _yaml
+import os as _os
 from os import path
 
 _templates_dir = path.join(path.dirname(__file__), 'templates')
@@ -130,7 +130,7 @@ def generate_report(figure_list, title_list=0, caption_list=0, fileName='Final.h
         caption_list.append("Default Caption")
             
     with open(_templates_dir + '/' + template) as file:
-        template_dict = yaml.safe_load(file)
+        template_dict = _yaml.safe_load(file)
 
     html_template = template_dict['html_template']
     header_template = template_dict['header']
@@ -183,11 +183,11 @@ def generate_report(figure_list, title_list=0, caption_list=0, fileName='Final.h
 
 def embed_report(rec_email, report, sender_email, password, text="Default text", message = MIMEMultipart(), fileName = 'Final.html', del_files="no", subject="Email Report"):
     
-    if os.path.exists("filenames.txt"):
+    if _os.path.exists("filenames.txt"):
         file = open("filenames.txt", "r")
         filenames = file.read()
         file.close()
-        os.remove("filenames.txt")
+        _os.remove("filenames.txt")
         fileNames = filenames.strip('][').split(', ')
     
     else:
@@ -223,17 +223,17 @@ def embed_report(rec_email, report, sender_email, password, text="Default text",
     
     final_message = message.as_string()
     if del_files == 'yes':
-        if os.path.exists("Final.html"):
-            os.remove("Final.html")
+        if _os.path.exists("Final.html"):
+            _os.remove("Final.html")
         else:
             pass
-        if os.path.exists(fileName):
-            os.remove(fileName)
+        if _os.path.exists(fileName):
+            _os.remove(fileName)
         else:
             pass
         for i in range(len(fileNames)):
-            if os.path.exists(fileNames[i]):
-                os.remove(fileNames[i])
+            if _os.path.exists(fileNames[i]):
+                _os.remove(fileNames[i])
     else:
         pass
     return final_message

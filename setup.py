@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 import pkg_resources
 import os
 
-VERSION = "0.0.8"
+VERSION = "0.0.9"
 
 DESCRIPTION = "Reporty is a package"
 
@@ -26,6 +26,7 @@ setup(name='reporty',
       url='https://github.com/asboyer2/email_report',  # URL to the repo
       keywords=['report', 'email'],
       install_requires=[
+      'pyaml>=20.40'
           ],
       include_package_data=True
       )
