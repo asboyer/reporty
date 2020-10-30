@@ -37,7 +37,7 @@ if __name__ == "__main__":
 
     
 report = generate_report(figure_list, title_list, caption_list, template='basic_theme', alt_text='this text is just in case email is stupid')
-embed = embed_report(report, del_files='yes')
+embed = embed_report(report, del_files='yes', rec_name="bruh")
 server = connect_email(sender_email, password)
 send_email(server, rec_email, embed, sender_email)
     

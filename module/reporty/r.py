@@ -200,7 +200,7 @@ def embed_report(report, text='', message = _MIMEMultipart(), fileName = 'report
     if rec_name == '':
         pass
     else:
-        message["To"] = rec_email
+        message["To"] = rec_name
     if subject == '':
         pass
     else:    
