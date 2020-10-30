@@ -92,7 +92,7 @@ def _make_html_from_figure_object(fig, alt_text, matplot_names, image, image1):
     return html_string        
 
 
-def generate_report(figure_list, title_list=0, caption_list=0, fileName='Final.html', template='basic_theme.yaml', alt_text='Matplotlib figure'):
+def generate_report(figure_list, title_list=0, caption_list=0, fileName='reporty.html', template='basic_theme.yaml', alt_text='Matplotlib figure'):
     
     template = template + ".yaml"
     
@@ -181,7 +181,7 @@ def generate_report(figure_list, title_list=0, caption_list=0, fileName='Final.h
         
     return html2
 
-def embed_report(rec_email, report, sender_email, text="Default text", message = _MIMEMultipart(), fileName = 'Final.html', del_files="no", subject="Email Report"):
+def embed_report(report, text='', message = _MIMEMultipart(), fileName = 'reporty.html', del_files='no', subject='', sender_name='', rec_name=''):
     
     if _os.path.exists("filenames.txt"):
         file = open("filenames.txt", "r")
@@ -192,10 +192,20 @@ def embed_report(rec_email, report, sender_email, text="Default text", message =
     
     else:
         pass
-    
-    #message["From"] = sender_email
-    message["To"] = rec_email
-    message["Subject"] = subject
+        
+    if sender_name == '':
+        pass
+    else:
+        message["From"] = sender_name
+    if rec_name == '':
+        pass
+    else:
+        message["To"] = rec_email
+    if subject == '':
+        pass
+    else:    
+        message["Subject"] = subject
+        
     message.attach(_MIMEText(text, 'plain'))
     
     attatchment = _MIMEText(report, "html")
@@ -223,8 +233,8 @@ def embed_report(rec_email, report, sender_email, text="Default text", message =
     
     final_message = message.as_string()
     if del_files == 'yes':
-        if _os.path.exists("Final.html"):
-            _os.remove("Final.html")
+        if _os.path.exists("reporty.html"):
+            _os.remove("reporty.html")
         else:
             pass
         if _os.path.exists(fileName):
