@@ -36,6 +36,8 @@ if __name__ == "__main__":
     title_list = ['title ' + str(i) for i in range(5)]
 
     
+
 report = generate_report(figure_list)
 print(report)
+
     
