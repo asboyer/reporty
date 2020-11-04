@@ -1,11 +1,13 @@
-from reporty import generate_report, embed_report, connect_email, send_email
-from email_credentials import password, sender_email
+# import the three functions from reporty
+from reporty import send_email, embed_report, generate_report
+
+
 from pandas import DataFrame
 from matplotlib import pyplot as plt
 import numpy as np
-import random
+from matplotlib import pyplot as plt
+import random 
 number = random.randint(1, 100000)
-
 
 def make_random_figure():
     data =  np.random.normal(size=(20, 2))
@@ -13,15 +15,14 @@ def make_random_figure():
     df['Stock_Index_Price'] += 10
     return df
 
-
-rec_email = "b.tengelsen@gmail.com"
-
+rec_email = "deepkernel1@gmail.com"
 
 
 if __name__ == "__main__":
 
     fig1, ax1 = plt.subplots(1,1, figsize=(10,5))
     ax1.plot([1,2,3,4,5], [1,4,2,4,1])
+    
 
     fig2, ax2 = plt.subplots(1,1, figsize=(10,5))
     ax2.plot([1,2,3,4,5], [2,2,2,2,3])
@@ -35,8 +36,6 @@ if __name__ == "__main__":
     title_list = ['title ' + str(i) for i in range(5)]
 
     
-    report = generate_report(figure_list, title_list, caption_list, template='basic_theme', fileName ='myfile.html', alt_text='this text is just in case email is stupid')
-    embed = embed_report(rec_email, report, password, sender_email, text="This message was sent with python", subject=str(number),  del_files='yes', fileName ='myfile.html')
-    server = connect_email(sender_email, password)
-    send_email(server, rec_email, embed, sender_email)
+report = generate_report(figure_list)
+print(report)
     
