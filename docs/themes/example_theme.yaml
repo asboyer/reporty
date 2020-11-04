@@ -1,0 +1,46 @@
+html_template: | 
+# css is inserted in {1}
+# header, caption, and then figures (repeated each time see example_theme.html for example)
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <style>
+    {1} 
+    </style>
+    </head>
+    <body>
+    {0}
+    </body>
+    </html>
+  
+css: |
+# css goes here 
+    body {
+      background-color: linen;
+    }
+    
+    h1 {
+      color: maroon;
+      margin-left: 0px;
+    }
+
+header: | 
+# header goes here
+# title passed by end user goes in {title}
+# caption passed by end user goes {caption}
+    <h1>{title}</h1>
+    <p>{caption}</p>
+
+image: |
+# image is name passed inside 
+# this one shows emails 
+    <div>
+        <img src="cid:{image}" /> 
+    </div>
+    
+image_data : |
+# encoded image data passed inside 
+# this one shows in downloaded html
+    <div>
+        <img src="data:image/png;base64,{data}" />
+    </div>
