@@ -35,12 +35,12 @@ image: |
 # image is name passed inside 
 # this one shows emails 
     <div>
-        <img src="cid:{image}" /> 
+        <img src="cid:{image}" alt="{alt_text}" /> 
     </div>
     
 image_data : |
 # encoded image data passed inside 
 # this one shows in downloaded html
     <div>
-        <img src="data:image/png;base64,{data}" />
+        <img src="data:image/png;base64,{data}" alt="{alt_text}" />
     </div>

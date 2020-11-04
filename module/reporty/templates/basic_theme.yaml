@@ -28,11 +28,11 @@ header: |
 image: |
 
     <div>
-        <img src="cid:{image}" /> 
+        <img src="cid:{image}" alt="{alt_text}" /> 
     </div>
     
 image_data : |
 
     <div>
-        <img src="data:image/png;base64,{data}" />
+        <img src="data:image/png;base64,{data}" alt="{alt_text}" />
     </div>
