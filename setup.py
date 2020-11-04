@@ -1,18 +1,32 @@
 from setuptools import setup, find_packages
-import pkg_resources
 import os
 
-VERSION = "0.0.9"
+DISTNAME = 'reporty'
 
-DESCRIPTION = "Reporty is a package"
+VERSION = '0.1.0'
 
-LICENSE = "BSD"
+DESCRIPTION = 'Reporty is a python library that contains useful functions for organizing and distributing visual data'
 
-DESCRIPTION = "This python library contains functions that help with sending formatted data"
+LONG_DESCRIPTION = ""
 
-LONG_DESCRIPTION = "Coming soon"
+LICENSE = 'BSD'
 
-setup(name='reporty',
+AUTHOR = 'Andrew Boyer and Ben Tengleson'
+
+EMAIL = 'reportylib@gmail.com'
+
+WEBSITE = ''
+
+PROJECT_URLS = {
+    "Documentation": "",
+    "Source Code": 'https://github.com/asboyer2/reporty',
+}
+
+KEYWORDS = ['report', 'email', 'plot', 'graph', 'embed']
+
+REQUIREMENTS = ['pyaml']
+
+setup(name=DISTNAME,
       packages=['reporty'],
       package_dir={'reporty': 'module/reporty'},
       package_data={'reporty': ['templates/*.yaml']},
@@ -20,13 +34,11 @@ setup(name='reporty',
       description=DESCRIPTION,
       long_description=LONG_DESCRIPTION,
       license=LICENSE,
-      #classifiers=CLASSIFIERS,
-      author='Andrew S. Boyer and Ben Tengleson',
-      author_email='asboyer@gmail.com',
-      url='https://github.com/asboyer2/email_report',  # URL to the repo
-      keywords=['report', 'email'],
-      install_requires=[
-      'pyaml>=20.40'
-          ],
+      author=AUTHOR,
+      author_email=EMAIL,
+      url= WEBSITE,
+      project_urls=PROJECT_URLS,
+      keywords=KEYWORDS,
+      install_requires=REQUIREMENTS,
       include_package_data=True
       )
