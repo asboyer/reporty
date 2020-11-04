@@ -1,6 +1,8 @@
 # import the three functions from reporty
 from reporty import send_email, embed_report, generate_report
 
+sender_email = 'andrewsboyer@outlook.com'
+password = 'eliteasb35'
 
 from pandas import DataFrame
 from matplotlib import pyplot as plt
@@ -37,7 +39,8 @@ if __name__ == "__main__":
 
     
 
-report = generate_report(figure_list)
-print(report)
+report = generate_report(figure_list, alt_text="bruh", file_name='bruh')
+embed = embed_report(report, del_files='yes', sender_name='bruh', file_name='bruh')
+send_email(sender_email, password, rec_email, embed)
 
     
