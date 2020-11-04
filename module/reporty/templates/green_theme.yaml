@@ -31,7 +31,7 @@ image: |
         <img src="cid:{image}" /> 
     </div>
     
-image1 : |
+image_data : |
 
     <div>
         <img src="data:image/png;base64,{data}" />
