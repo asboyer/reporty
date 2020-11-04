@@ -15,12 +15,7 @@ AUTHOR = 'Andrew Boyer and Ben Tengleson'
 
 EMAIL = 'reportylib@gmail.com'
 
-WEBSITE = ''
-
-PROJECT_URLS = {
-    "Documentation": "",
-    "Source Code": 'https://github.com/asboyer2/reporty',
-}
+URL = 'https://github.com/asboyer2/email_report'
 
 KEYWORDS = ['report', 'email', 'plot', 'graph', 'embed']
 
@@ -36,7 +31,7 @@ setup(name=DISTNAME,
       license=LICENSE,
       author=AUTHOR,
       author_email=EMAIL,
-      url= WEBSITE,
+      url= URL,
       project_urls=PROJECT_URLS,
       keywords=KEYWORDS,
       install_requires=REQUIREMENTS,
