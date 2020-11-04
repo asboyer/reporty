@@ -32,7 +32,6 @@ setup(name=DISTNAME,
       author=AUTHOR,
       author_email=EMAIL,
       url= URL,
-      project_urls=PROJECT_URLS,
       keywords=KEYWORDS,
       install_requires=REQUIREMENTS,
       include_package_data=True
