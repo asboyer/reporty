@@ -1,13 +1,37 @@
-from setuptools import setup, find_packages
-import os
+"""
+Setup file for reporty library
+"""
 
+from setuptools import setup
 DISTNAME = 'reporty'
 
-VERSION = '0.1.0'
+VERSION = '0.1.1'
 
-DESCRIPTION = 'Reporty is a python library that contains useful functions for organizing and distributing visual data'
+DESCRIPTION = '''
+Reporty is a python library that contains useful 
+functions for organizing and distributing visual data
+'''
 
-LONG_DESCRIPTION = ""
+LONG_DESCRIPTION = '''
+Reporty is a python library that contains useful 
+functions for organizing and distributing visual data
+
+All features available using gmail
+
+Limited features available using outlook
+
+Support for other mail providers coming soon
+
+Templates:
+- Basic
+- Green
+- Red Stripes
+- Red
+
+More templates coming soon
+
+Report any bugs or email us with questions: reportylib@gmail.com
+'''
 
 LICENSE = 'BSD'
 
@@ -31,7 +55,7 @@ setup(name=DISTNAME,
       license=LICENSE,
       author=AUTHOR,
       author_email=EMAIL,
-      url= URL,
+      url=URL,
       keywords=KEYWORDS,
       install_requires=REQUIREMENTS,
       include_package_data=True
