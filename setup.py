@@ -3,17 +3,15 @@ Setup file for reporty library
 """
 
 from setuptools import setup
+
 DISTNAME = 'reporty'
 
-VERSION = '0.1.3'
+VERSION = '0.1.5'
 
-DESCRIPTION = '''
-Reporty is a python library that contains useful 
-functions for organizing and distributing visual data
-'''
+DESCRIPTION = 'Reporty is a python library that contains useful functions for organizing and distributing visual data'
 
-LONG_DESCRIPTION = '''
-Reporty is a python library that contains useful 
+LONG_DESCRIPTION = """
+**Reporty** is a python library that contains useful 
 functions for organizing and distributing visual data
 
 All features available using gmail
@@ -23,15 +21,15 @@ Limited features available using outlook
 Support for other mail providers coming soon
 
 Templates:
-- Basic
-- Green
-- Red Stripes
-- Red
+* Basic
+* Green
+* Red Stripes
+* Red
 
-More templates coming soon
+More templates **coming soon**
 
 Report any bugs or email us with questions: reportylib@gmail.com
-'''
+"""
 
 LICENSE = 'BSD'
 
@@ -45,6 +43,8 @@ KEYWORDS = ['report', 'email', 'plot', 'graph', 'embed']
 
 REQUIREMENTS = ['pyaml']
 
+PYTHON = ">=3.5"
+
 setup(name=DISTNAME,
       packages=['reporty'],
       package_dir={'reporty': 'module/reporty'},
@@ -52,11 +52,13 @@ setup(name=DISTNAME,
       version=VERSION,
       description=DESCRIPTION,
       long_description=LONG_DESCRIPTION,
+      long_description_content_type='text/markdown',
       license=LICENSE,
       author=AUTHOR,
       author_email=EMAIL,
       url=URL,
       keywords=KEYWORDS,
       install_requires=REQUIREMENTS,
+      python_requires=PYTHON,
       include_package_data=True
       )
