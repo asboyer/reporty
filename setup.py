@@ -5,7 +5,7 @@ Setup file for reporty library
 from setuptools import setup
 DISTNAME = 'reporty'
 
-VERSION = '0.1.1'
+VERSION = '0.1.2'
 
 DESCRIPTION = '''
 Reporty is a python library that contains useful 
@@ -35,7 +35,7 @@ Report any bugs or email us with questions: reportylib@gmail.com
 
 LICENSE = 'BSD'
 
-AUTHOR = 'Andrew Boyer and Ben Tengleson'
+AUTHOR = 'Andrew Boyer'
 
 EMAIL = 'reportylib@gmail.com'
 
