@@ -3,7 +3,8 @@ two ways to use the reporty functions
 """
 
 # !NOTE: this file only provides information on how to use reporty and
-#it does not show how to use it in context: which is available at use_context.py
+#it does not show how to use it in context: 
+#which is available at https://github.com/asboyer2/reporty/blob/master/docs/use_context.py
 
 # import the three functions from reporty
 from reporty import send_email, embed_report, generate_report

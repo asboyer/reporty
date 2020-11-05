@@ -39,7 +39,7 @@ AUTHOR = 'Andrew Boyer'
 
 EMAIL = 'reportylib@gmail.com'
 
-URL = 'https://github.com/asboyer2/email_report'
+URL = 'https://github.com/asboyer2/reporty'
 
 KEYWORDS = ['report', 'email', 'plot', 'graph', 'embed']
 

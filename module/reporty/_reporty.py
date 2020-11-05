@@ -4,7 +4,7 @@ a full html report with those figures from selected templates
 
 reporty also has functions that can embed this report in an email and send it out
 
-docs:
+docs: https://github.com/asboyer2/reporty/tree/master/docs
 """
 import smtplib as _smtplib
 import os as _os
