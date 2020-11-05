@@ -5,7 +5,7 @@ Setup file for reporty library
 from setuptools import setup
 DISTNAME = 'reporty'
 
-VERSION = '0.1.2'
+VERSION = '0.1.3'
 
 DESCRIPTION = '''
 Reporty is a python library that contains useful 
