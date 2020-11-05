@@ -22,6 +22,7 @@ fig_list = []
 for i in range(10):
 	fig = make_random_figure("Bros", "bros")
 	fig_list.append(fig)
+
 report = generate_report(fig_list)
 embed = embed_report(report)
 send_email(sender_email, password, rec_email, embed)
