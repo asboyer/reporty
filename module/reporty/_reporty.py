@@ -9,8 +9,8 @@ docs: https://github.com/asboyer2/reporty/tree/master/docs
 import smtplib as _smtplib
 import os as _os
 from os import path as _path
-import base64
-from io import BytesIO
+import base64 as _base64
+from io import BytesIO as _BytesIO
 from email.mime.multipart import MIMEMultipart as _MIMEMultipart
 from email.mime.text import MIMEText as _MIMEText
 from email.mime.image import MIMEImage as _MIMEImage
@@ -342,10 +342,10 @@ def _make_html_from_figure_object(fig, alt_text, matplot_names, image, image_dat
     # checks if matplot fig
     if str(fig.__class__) == "<class 'matplotlib.figure.Figure'>":
         # generate the figure and save as png
-        buf = BytesIO()
+        buf = _BytesIO()
         fig.savefig(buf, format="png")
         # embed the result in the html output
-        data = base64.b64encode(buf.getbuffer()).decode("ascii")
+        data = _base64.b64encode(buf.getbuffer()).decode("ascii")
         html_string0 = ("\n" + image_data + "\n").format(data=data, alt_text=alt_text)
         for i in range(len(matplot_names)):
             html_string1 = ("\n" + image + "\n").format(image=matplot_names[i].replace('.png', ''),
