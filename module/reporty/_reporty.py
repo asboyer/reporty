@@ -9,6 +9,8 @@ docs:
 import smtplib as _smtplib
 import os as _os
 from os import path as _path
+import base64
+from io import BytesIO
 from email.mime.multipart import MIMEMultipart as _MIMEMultipart
 from email.mime.text import MIMEText as _MIMEText
 from email.mime.image import MIMEImage as _MIMEImage
@@ -103,7 +105,7 @@ def generate_report(figure_list, title_list=0, caption_list=0,
         # get list of header & captions html
         header_html.append(header_template.format(title=title, caption=caption))
 
-    # writes correct filenames for matplot png
+    # writes correct file names for matplot png
     if len(matplot_names) > 0:
         file = open("filenames.txt", "w+")
         my_string = (str(matplot_names)).replace("'", '')
@@ -116,7 +118,7 @@ def generate_report(figure_list, title_list=0, caption_list=0,
     # creates html with all of the new data joined together by a line break
     here_html = '\n'.join(new_data)
 
-    # makes html file and uses template and formates the html and css
+    # makes html file and uses template and formats the html and css
     file = open(file_name, "w+")
     file.write(html_template.format(here_html, css))
     file.close()
@@ -131,7 +133,7 @@ def generate_report(figure_list, title_list=0, caption_list=0,
 
 def embed_report(report, file_name='reporty', del_files='no',
                  subject='', sender_name='', rec_name='', text=''):
-    """ embeds report in custom email, and attatches html files and pngs
+    """ embeds report in custom email, and attaches html files and pngs
 
     Args:
         report (str): html code
@@ -142,7 +144,7 @@ def embed_report(report, file_name='reporty', del_files='no',
         subject (str): subject of email - default is '' (no subject)
         sender_name (str): name of sender (will be email name no matter what on
         outlook) - default is '' (will result to email address on all platforms)
-        rec_name (str): name of reciever (must be left blank for outlook users)
+        rec_name (str): name of receiver (must be left blank for outlook users)
         - default is '' (will result in no send tag for gmail)
         text (str): any extra text you want to send will appear at start of
         email - default is '' (will result to no extra text)
@@ -170,7 +172,7 @@ def embed_report(report, file_name='reporty', del_files='no',
     else:
         pass
 
-    # adds a sender_name, reciever name, and a subject
+    # adds a sender_name, receiver name, and a subject
     if sender_name == '':
         pass
     else:
@@ -188,9 +190,9 @@ def embed_report(report, file_name='reporty', del_files='no',
     # attatches 'text' to message
     message.attach(_MIMEText(text, 'plain'))
 
-    # attatches the html attatchment to message
-    attatchment = _MIMEText(report, "html")
-    message.attach(attatchment)
+    # attatches the html attachment to message
+    attachment = _MIMEText(report, "html")
+    message.attach(attachment)
 
     # adds a content id to all matplot pngs and attaches images
     if len(file_names) > 0:
@@ -225,10 +227,6 @@ def embed_report(report, file_name='reporty', del_files='no',
 
     # deletes extra files if user specifies
     if del_files == 'yes':
-        if _os.path.exists("reporty.html"):
-            _os.remove("reporty.html")
-        else:
-            pass
         if _os.path.exists(file_name):
             _os.remove(file_name)
         else:
@@ -247,8 +245,8 @@ def send_email(sender_email, password, rec_email, message):
     Args:
         sender_email (str): senders email address
         password (str): password for sender's email
-        rec_email (str): reciever's email
-        message (str): attatched message
+        rec_email (str): receiver's email
+        message (str): attached message
 
     Returns:
         passes smtplib.SMTP object through _sent_email() function to send email
@@ -266,22 +264,22 @@ def send_email(sender_email, password, rec_email, message):
     print("Login success!")
 
     # calls second send email function
-    _sent_email(server, rec_email, message, sender_email, password)
+    _sent_email(server, rec_email, message, sender_email)
 
 def _sent_email(server, rec_email, message, sender_email):
     """ sends email
     Args:
         server <smtplib.SMTP object>: smtplib.SMTP object
-        rec_email (str): reciever's email
-        message (str): attatched message
+        rec_email (str): receiver's email
+        message (str): attached message
         sender_email (str): senders email address
         password (str): password for sender's email
 
     Returns:
-        sends email, prints confimation and quits server
+        sends email, prints confirmation and quits server
     """
 
-    # sends email, prints confimation and quits server
+    # sends email, prints confirmation and quits server
     server.sendmail(sender_email, rec_email, message)
     print("Email has been sent to " + rec_email)
     server.quit()
@@ -343,8 +341,6 @@ def _make_html_from_figure_object(fig, alt_text, matplot_names, image, image_dat
 
     # checks if matplot fig
     if str(fig.__class__) == "<class 'matplotlib.figure.Figure'>":
-        import base64
-        from io import BytesIO
         # generate the figure and save as png
         buf = BytesIO()
         fig.savefig(buf, format="png")
@@ -362,7 +358,7 @@ def _make_html_from_figure_object(fig, alt_text, matplot_names, image, image_dat
     elif str(type(fig)) == "<class 'pandas.core.frame.DataFrame'>":
         html_string = fig.to_html(border=0)
 
-    # raises excpetion if unknown fig
+    # raises exception if unknown fig
     else:
         raise Exception('''Invalid figure object - must be a pandas
                         dataframe or a matplotlib figure object''')
