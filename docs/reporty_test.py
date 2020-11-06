@@ -4,10 +4,10 @@ basic way to test reporty
 
 from reporty import send_email, embed_report, generate_report
 
-sender_email = 'test.email.12700@gmail.com' 
-password = 'testemail999OP!'
+sender_email = '' 
+password = ''
 
-rec_email = 'deepkernel1@gmail.com'
+rec_email = ''
 
 from pandas import DataFrame
 import numpy as np
