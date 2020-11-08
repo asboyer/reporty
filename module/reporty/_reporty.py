@@ -46,7 +46,6 @@ def generate_report(figure_list, title_list=0, caption_list=0,
     Returns:
         html file contents
     """
-
     # associates template input with respective yaml file
     template = template + "_theme.yaml"
 
@@ -175,6 +174,9 @@ def embed_report(report, file_name='reporty', del_files='no',
     # adds a sender_name, receiver name, and a subject
     if sender_name == '':
         pass
+    elif not(" " in sender_name):
+        sender_name = sender_name + ' via reporty'
+        message["From"] = str(sender_name)
     else:
         message["From"] = str(sender_name)
     if rec_name == '':
