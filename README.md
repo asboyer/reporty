@@ -1,4 +1,5 @@
-##pip install reporty
+# Reporty
+## pip install reporty
 ***
 Version 0.1.8 currently available: https://pypi.org/project/reporty/
 ***
