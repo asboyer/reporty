@@ -6,7 +6,7 @@ from setuptools import setup
 
 DISTNAME = 'reporty'
 
-VERSION = '0.1.7'
+VERSION = '0.1.8'
 
 DESCRIPTION = 'Reporty is a python library that contains useful functions for organizing and distributing visual data'
 
