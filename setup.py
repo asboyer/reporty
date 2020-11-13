@@ -6,7 +6,7 @@ from setuptools import setup
 
 DISTNAME = 'reporty'
 
-VERSION = '0.1.8'
+VERSION = '0.1.9'
 
 DESCRIPTION = 'Reporty is a python library that contains useful functions for organizing and distributing visual data'
 
@@ -33,7 +33,7 @@ Report any bugs or email us with questions: reportylib@gmail.com
 
 LICENSE = 'BSD'
 
-AUTHOR = 'Andrew Boyer'
+AUTHOR = 'Andrew Boyer & Ben Tengelsen'
 
 EMAIL = 'reportylib@gmail.com'
 
