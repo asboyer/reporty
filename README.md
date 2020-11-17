@@ -3,9 +3,6 @@
   <img src="https://github.com/asboyer2/email_report/blob/master/logos/main_logo_cropped.png?raw=true"/>
 </p>
 </div>
-***
-# pip install reporty
-### [Version 0.1.9 currently available](https://pypi.org/project/reporty/)
 
 ## What is reporty?
 **Reporty** is a python library that contains useful functions for organizing and distributing visual data
@@ -27,3 +24,6 @@ See the following:
     * If contributing to templates, see [this](https://github.com/asboyer2/reporty/tree/master/docs/theme_docs)
 * Create a pull request!
 
+***
+# pip install reporty
+### [Version 0.1.9 currently available](https://pypi.org/project/reporty/)
