@@ -9,7 +9,7 @@
 
 ## How to install
 In your terminal or command prompt, make sure you have python installed.
-###*pip install reporty*
+### *pip install reporty*
 
 ## Examples
 Find examples **[here](https://github.com/asboyer2/reporty/tree/master/docs)**
