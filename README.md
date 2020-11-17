@@ -8,7 +8,8 @@
 **Reporty** is a python library that contains useful functions for organizing and distributing visual data
 
 ## How to install
-In your terminal or command prompt, make sure you have python installed. Then, type *pip install reporty*
+In your terminal or command prompt, make sure you have python installed.
+###*pip install reporty*
 
 ## Examples
 Find examples **[here](https://github.com/asboyer2/reporty/tree/master/docs)**
