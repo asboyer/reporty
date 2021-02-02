@@ -28,3 +28,4 @@ See the following:
 ***
 # pip install reporty
 ### [Version 0.1.9 currently available](https://pypi.org/project/reporty/)
+pip show reporty
