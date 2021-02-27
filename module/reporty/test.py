@@ -2,7 +2,7 @@
 basic way to test reporty
 """
 
-from R import send_email, embed_report, generate_page
+from reporty import send_email, embed_report, generate_page
 
 image = 'images'
 
