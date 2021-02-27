@@ -265,11 +265,11 @@ def embed_report(report, file_name='reporty', del_files='no',
     # adds a sender_name, receiver name, and a subject
     if sender_name == '':
         pass
-    elif not(" " in sender_name.strip()):
-        sender_name = sender_name.strip() + ' (via reporty)'
+    elif not(" " in sender_name):
+        sender_name = sender_name + ' via reporty'
         message["From"] = str(sender_name)
     else:
-        message["From"] = str(sender_name).strip()
+        message["From"] = str(sender_name)
     if rec_name == '':
         pass
     else:
