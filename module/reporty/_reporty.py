@@ -23,7 +23,7 @@ import yaml as _yaml
 _TEMPLATES_DIR = _path.join(_path.dirname(__file__), 'templates')
 
 # usable functions
-__all__ = ['generate_report', 'embed_report', 'send_email']
+__all__ = ['generate_report', 'generate_page', 'embed_report', 'send_email']
 
 def generate_report(figure_list, title_list=0, caption_list=0,
                     file_name='reporty', template='basic',
@@ -130,8 +130,99 @@ def generate_report(figure_list, title_list=0, caption_list=0,
     # returns (str) 'html2' with html files contents
     return html2
 
+def generate_page(images, title_list=0, caption_list=0,
+                    file_name='reporty', template='basic',
+                    alt_text='', dir_name=''):
+                    
+    # associates template input with respective yaml file
+    template = template + "_theme.yaml"
+
+    # takes custom file name and adds html file extension
+    file_name = file_name + ".html"
+    image_names = []
+    dir_name = 0
+
+    if type(images) == list:
+        for img in images:
+            image_names.append(_png_name(img))
+            images = image_names
+    elif type(images) == str:
+        dir_name = images
+        files = _os.listdir(images)
+        images = []
+        for f in files:
+            images.append(f)
+    else:
+        raise Exception('''Invalid - must be a list of images or file path 
+                        to dir with images''')
+    
+    # writes default captions
+    if title_list == 0:
+        title_list = []
+        for i in range(len(images)):
+            title_list.append("Figure "+str(i+1))
+    else:
+        pass
+
+    if caption_list == 0:
+        caption_list = []
+        for i in range(len(images)):
+            caption_list.append("Caption "+str(i+1))
+    else:
+        pass
+
+    while len(title_list) < len(images):
+        title_list.append("Default Title")
+
+    while len(caption_list) < len(images):
+        caption_list.append("Default Caption")
+
+    # loads specified template yaml file and assigns parts as variables
+    with open(_TEMPLATES_DIR + '/' + template) as file:
+        template_dict = _yaml.safe_load(file)
+    html_template = template_dict['html_template']
+    header_template = template_dict['header']
+    css = template_dict['css']
+    image = template_dict['image']
+    image_data = template_dict['image_data']
+    
+    # creates empty lists
+    image_html = []
+    header_html = []
+    
+
+    for img, title, caption in zip(images, title_list, caption_list):
+        image_html.append(_make_html_from_png(img, alt_text, image, image_data, dir_name))
+        header_html.append(header_template.format(title=title, caption=caption))
+        
+    file = open("filenames.txt", "w+")
+    if dir_name == 0:
+        my_string = (str(image_names)).replace("'", '')
+    else:
+        my_string = (str(images)).replace("'", '')
+    file.write(my_string)
+    file.close()
+    
+    new_data = _prepend(image_html, header_html)
+
+    # creates html with all of the new data joined together by a line break
+    here_html = '\n'.join(new_data)
+
+    # makes html file and uses template and formats the html and css
+    file = open(file_name, "w+")
+    file.write(html_template.format(here_html, css))
+    file.close()
+
+    # takes contents of html file and puts them into 'html2' variable
+    file2 = open(file_name, "r")
+    html2 = file2.read()
+    file2.close()
+
+    # returns (str) 'html2' with html files contents
+    return html2
+
 def embed_report(report, file_name='reporty', del_files='no',
-                 subject='', sender_name='', rec_name='', text=''):
+                 subject='', sender_name='', rec_name='', text='', dir_name=0):
     """ embeds report in custom email, and attaches html files and pngs
 
     Args:
@@ -199,7 +290,10 @@ def embed_report(report, file_name='reporty', del_files='no',
     # adds a content id to all matplot pngs and attaches images
     if len(file_names) > 0:
         for i in range(len(file_names)):
-            f_p = open(file_names[i], 'rb')
+            if dir_name == 0:
+                f_p = open(file_names[i], 'rb')
+            else:
+                f_p = open(dir_name + '/' + file_names[i], 'rb')
             image = _MIMEImage(f_p.read(), filename=file_names[i])
             _encoders.encode_base64(image)
             f_p.close()
@@ -368,4 +462,24 @@ def _make_html_from_figure_object(fig, alt_text, matplot_names, image, image_dat
     # html string from figure object
     return html_string
 
+def _png_name(img):
+
+    f_name = img + ".png"
+
+    return f_name
+
+def _make_html_from_png(img, alt_text, image, image_data, dir_name):
+    if dir_name == 0:
+        f = open(img, "rb")
+        data = _base64.b64encode(f.read()).decode("ascii")
+    else:
+        f = open(dir_name + '/' + img, "rb")
+        data = _base64.b64encode(f.read()).decode("ascii")
+    html_string0 = ("\n" + image_data + "\n").format(data=data, alt_text=alt_text)
+    html_string1 = ("\n" + image + "\n").format(image=img.replace('.png', ''),
+                                                            alt_text=alt_text)
+    html_string = html_string1 + html_string0
+    f.close()
+        
+    return html_string
 # Written by Andrew Boyer with help from Ben Tengleson
